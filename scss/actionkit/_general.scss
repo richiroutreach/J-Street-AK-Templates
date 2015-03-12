@@ -1,0 +1,159 @@
+/*
+	---------------------------------------------------------------------------
+		General Styles
+	---------------------------------------------------------------------------
+*/
+
+body {
+	background: url("https://s3.amazonaws.com/s3.jstreet.org/foundation/img/stone_bg.jpg") no-repeat; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;	
+}
+
+.hidden {
+	display: none;
+}
+
+.body {
+	background: rgba(white, 0.8);
+	margin-bottom: 5rem;
+	padding: 1.5rem;
+}
+
+.button {
+	border-radius: 5px;
+
+	&.alert {
+		background: $primary-color;
+		color: $info-color;
+		text-transform: uppercase;
+		transition: 300ms ease-out;
+
+		&:hover {
+			background: $info-color;
+		}
+	}
+}
+
+.page-title {
+	h2 {
+		text-transform: uppercase;
+		color: $primary-color;
+		font-weight: bold;
+
+		.subtitle {
+			color: $info-color;
+		}
+	}
+}
+
+.page-ask {
+	margin-bottom: 1rem;
+
+	p {
+		font-size: 1.25rem;
+
+		img {
+			margin-right: 1rem;
+			margin-bottom: 1rem;
+		}
+	}
+}
+
+.form-submit {
+	text-align: center;
+	margin-top: 2rem;
+
+	button.large.alert {
+		padding: 0.5rem 7rem;
+		font-size: 2rem;
+	}
+}
+
+ul.ak-err {
+	li {
+		color: #980002;
+	}
+}
+
+
+.main-half-column {
+	width: percentage(9.25 / 12);
+}
+
+.sidebar-half-column {
+	width: percentage(2.5 / 12);
+}
+
+
+/*
+	---------------------------------------------------------------------------
+		Sidebar Styles
+	---------------------------------------------------------------------------
+*/
+.sidebar {
+	background: white;
+	padding: 1rem;
+
+	h3 {
+		font-size: 1.5rem;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+}
+
+
+/*
+	---------------------------------------------------------------------------
+		Side Social Media Links
+	---------------------------------------------------------------------------
+*/
+
+.side-links {
+	position: fixed;
+	left: 0;
+	top: 25%;
+
+	ul {
+		margin: 0;
+		list-style-type: none;
+
+		li {
+			transition: 300ms;
+
+			&.tw {
+				background: $twitter;
+
+				a {
+					transition: 300ms;
+
+					&:hover {
+						background: darken($twitter, 10);
+					}
+				}
+			}
+
+			&.fb {
+				background: $facebook;
+
+				a {
+					padding-left: 9px;
+				}
+
+				&:hover {
+					background: darken($facebook, 10);
+				}
+			}
+
+			a {
+				color: white;
+				font-size: 2.5rem;
+				display: block;
+				line-height: 1;
+				padding: 5px;
+			}
+		}
+	}
+}

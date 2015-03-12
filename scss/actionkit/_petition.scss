@@ -1,0 +1,35 @@
+/*
+	---------------------------------------------------------------------------
+		Petition Specific Styles
+	---------------------------------------------------------------------------
+*/
+
+.petition-text {
+	background: $ask-bg;
+	padding: 1rem;
+
+	h3 {
+		text-transform: uppercase;
+	}
+
+	.lead-in {
+		color: $info-color;
+		text-transform: uppercase;
+	}
+}
+
+.petition-form {
+	h3 {
+		text-transform: uppercase;
+	}
+}
+
+.sidebar {
+	.signature {
+		margin-bottom: 2rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

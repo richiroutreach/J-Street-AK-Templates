@@ -1,0 +1,243 @@
+{% load actionkit_tags %}
+<!doctype html>
+<html lang="{{page.lang.iso_code|default:"en"}}"{% if page.lang.is_rtl %} dir="rtl"{% endif %}>
+<!-- Development Template -->
+<!-- wrapper.html -->
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link rel="icon" type="image/png" href="https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg">
+
+	<title>{% block title %}{{ page.title }} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}{% endblock %}</title>
+
+	<script>startTime=new Date()</script>
+
+{% comment %}
+	/*
+-------------------------------------------------------------------------------
+	@START - Facebook Meta Data	
+-------------------------------------------------------------------------------
+	*/
+{% endcomment %}
+
+	<meta property="og:title" content="{% client_name %} | {{ page.title }}" />
+
+	<meta property="og:image" content="{{ page.custom_fields.meta_image|default:"https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg" }}" />
+
+	{% if page.custom_fields.meta_description %}
+		<meta property="og:description" content="{{ page.custom_fields.meta_description }}"/>
+	{% endif %}
+
+	<meta name="title" content="{% client_name %} | {{ page.title }}" />
+	<meta property="twitter:account_id" content="14811485" />
+	
+	{% if page.custom_fields.meta_description %}
+		<meta name="description" content="{{ page.custom_fields.meta_description }}" />
+	{% endif %}  
+
+{% comment %}
+	/*
+-------------------------------------------------------------------------------
+	@END - Facebook Meta Data	
+-------------------------------------------------------------------------------
+	*/
+{% endcomment %}
+
+	{% block meta_additions %}{% endblock %}
+
+	{% block css_additions %}{% endblock %}
+
+	{% load_ak_context context %}
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	{% load_js %}
+		/resources/actionkit.js
+	{% end %}
+
+	{% block script_additions %}{% endblock %}
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="https://s3.amazonaws.com/s3.jstreet.org/foundation/css/actionkit.css" />
+
+	<!-- Foundation JS -->   
+	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/modernizr.js"></script>
+	
+	<!-- jQuery Cookie Plugin -->
+	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/jquery.cookie.js"></script>
+</head>
+
+<body class="{{ filename|split:'.'|nth:0 }}-page lang-{{page.lang.iso_code|default:"unknown"}}{% if page.lang.is_rtl %} ak-rtl{% endif %} ak-no-js {{ page.type }}">
+	<!-- Required AK JS -->
+	<script type="text/javascript">actionkit.forms.initPage()</script>
+
+	<div class="container">
+		<div class="header-wrapper">
+			<div id="header" class="row">
+				<div class="logo medium-6 small-12 columns">
+					<h1 class="hidden">jStreet</h1>
+
+					<a href="http://jstreet.org">
+						<img src="https://s3.amazonaws.com/s3.jstreet.org/images/jstreet-lg.jpg" alt="Logo" title="jStreet - The political home for pro-Israel, pro-peace Americans">
+					</a>
+				</div> <!-- .logo -->
+
+				<div class="socmed medium-6 small-5 columns">
+					<ul>
+						<li><a class="tw" target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
+						<li><a class="fb" target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
+						<li><a class="gp" target="_blank" href="#"><i class="fa fa-google-plus"></i></a></li>
+					</ul>
+				</div> <!-- .socmed -->
+			</div> <!-- #header -->
+		</div> <!-- .header-wrapper -->
+
+		<div class="body-wrapper">
+			<div class="row">
+				<div id="body" class="body {% if page.custom_fields.show_sidebar %}large-9 main-half-column {% else %}large-12 {% endif %}columns">
+					{% block content %}{% endblock %}
+				</div> <!-- .body -->
+
+				{% if page.custom_fields.show_sidebar %}
+					<div id="sidebar" class="sidebar large-2 sidebar-half-column columns">
+						{% if page.type == "Petition" %}
+							<h3>Recent Signatures</h3>
+
+							{% for a in page.recent_actions|unique:"user"|slice:":10" %}
+								<div class="signature">
+									{{ a.user.name }}<br>
+									{{ a.user.city }}, {{ a.user.state }}
+								</div> <!-- .signature -->
+							{% endfor %}
+						{% endif %}
+					</div> <!-- .sidebar -->
+				{% endif %}
+			</div> <!-- .row -->
+
+			{% block below_form %}
+				<script type="text/javascript">
+					actionkit.forms.contextRoot = '/context/';
+					actionkit.forms.initForm('act');
+				</script>
+			{% endblock %}
+		</div> <!-- .body-wrapper -->
+	
+		<div class="side-links">
+			<ul>
+				<li class="tw"><a target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
+				<li class="fb"><a target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
+			</ul>
+		</div> <!-- .side-links -->
+	</div>
+
+	{% if analytics_key %}
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', '{{ analytics_key }}', 'auto');
+			ga('send', 'pageview');
+		</script>
+	{% endif %}
+
+	<!-- Foundation JS -->
+	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/foundation.min.js"></script>
+
+	<script>
+		// Initalize Foundation
+		$(document).foundation();
+	</script>
+
+{% comment %}
+	/*
+-------------------------------------------------------------------------------
+	@START - GA Event Tracking
+-------------------------------------------------------------------------------
+	*/
+{% endcomment %}
+	
+	{% if analytics_key %}
+		<script>
+			// Global Variable to tell if AK knows who the visitor is or not
+			var knownUser = {% if user.email %}true{% else %}false{% endif %};
+
+			$(document).ready(function() {
+				// Send GA Event Tracking Info
+				ga('send', 'event', 'View', 'Template Used', 'Development Templateset');
+
+				ga('send', 'event', 'View', 'Type', '{{ page.type }}');
+
+				// Determine if we are on the thank you page or not
+				{% if filename|split:'.'|nth:0 == "thanks" %}
+					ga('send', 'event', 'View', 'Step', 'Completed ({{ page.type }})');
+					ga('send', 'event', 'View', 'Step', 'Completed ({{ page.id }})');
+
+					if(knownUser) {
+						ga('send', 'event', 'View', 'User', 'Completed ({{ user.email }} on {{ page.id }})');
+					} else {
+						ga('send', 'event', 'View', 'User', 'Completed (Unknown User on {{ page.id }})');
+					}
+				{% else %}
+					ga('send', 'event', 'View', 'Step', 'Ask ({{ page.type }})');
+					ga('send', 'event', 'View', 'Step', 'Ask ({{ page.id }})');
+
+					if(knownUser) {
+						ga('send', 'event', 'View', 'User', 'Ask ({{ user.email }} on {{ page.id }})');
+					} else {
+						ga('send', 'event', 'View', 'User', 'Ask (Unknown User on {{ page.id }})');				
+					}
+				{% endif %}
+
+				// See if this user has visited the site before
+				if(typeof $.cookie('user') !== 'undefined') {
+					{% if filename|split:'.'|nth:0 == "thanks" %}
+						ga('send', 'event', 'Cookie', 'View', 'Completed (' + $.cookie('user') + ' on {{ page.id }})');
+						ga('send', 'event', 'Cookie', $.cookie('user'), 'Completed ({{ page.id }})');
+					{% else %}
+						ga('send', 'event', 'Cookie', 'View', 'Ask (' + $.cookie('user') + ' on {{ page.id }})');
+						ga('send', 'event', 'Cookie', $.cookie('user'), 'Ask ({{ page.id }})');
+					{% endif %}
+				}
+
+				// See if the current user has visited this page before
+				{% if filename|split:'.'|nth:0 == "thanks" %}
+					if(typeof $.cookie('thanks-{{ page.id }}') === 'undefined') {
+						ga('send', 'event', 'View', 'Cookie', 'Unique Completed ({{ page.id }})');
+						$.cookie('thanks-{{ page.id }}', 'yes', { expires: 365, path: '/' });
+					}
+				{% else %}
+					if(typeof $.cookie('ask-{{ page.id }}') === 'undefined') {
+						ga('send', 'event', 'View', 'Cookie', 'Unique Ask ({{ page.id }})');
+						$.cookie('ask-{{ page.id }}', 'yes', { expires: 365, path: '/' });
+					}
+				{% endif %}
+
+				// Add the email cookie on form submit
+				$('#act').submit(function() {
+					if(typeof $.cookie('user') === 'undefined') {
+						if(knownUser) {
+							$.cookie('user', '{{ user.email }}', { expires: 365,  path: '/' });
+						} else if ( $('#email').val() != "" ) {
+							$.cookie('user', $('#email').val(), { expires: 365, path: '/'});
+						}
+					}
+				});
+			});
+		</script>
+	{% endif %}
+
+{% comment %}
+	/*
+-------------------------------------------------------------------------------
+	@END - GA Event Tracking
+-------------------------------------------------------------------------------
+	*/
+{% endcomment %}
+</body>
+</html>

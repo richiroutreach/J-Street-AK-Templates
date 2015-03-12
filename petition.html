@@ -1,0 +1,62 @@
+{% extends "./wrapper.html" %}{% load actionkit_tags %}
+{% block content %}
+<!-- @START Development Template/petition.html -->
+
+<form class="ak-form" name="act" method="POST" action="/act/" accept-charset="utf-8">
+	<input type="hidden" name="page" value="{{ page.name }}">
+
+	<div class="row">
+		<div class="large-12 columns page-title">
+			<h2>
+				{{ page.title }}
+
+				{% if page.custom_fields.page_subtitle %}
+					<br><span class="subtitle">{{ page.custom_fields.page_subtitle }}</span>
+				{% endif %}
+			</h2>
+		</div> <!-- .page-title -->
+	</div> <!-- .row -->
+
+	<div class="row">
+		<div class="large-12 columns page-ask">
+			{% autoescape off %}
+				{% include_tmpl form.about_text %}
+			{% endautoescape %}
+		</div> <!-- .page-ask -->
+	</div> <!-- .row -->
+
+	<div class="row">
+		<div class="large-6 columns petition-text-wrapper">
+			<div class="petition-text">
+				{% autoescape off %}
+					{% if form.statement_leadin %}
+						<div class="lead-in">
+							{% include_tmpl form.statement_leadin %}
+						</div> <!-- .lead-in -->
+					{% endif %}
+
+					{% include_tmpl form.statement_text %}
+				{% endautoescape %}
+			</div> <!-- .petition-text -->
+		</div> <!-- .petition-text-wrapper -->
+
+		<div class="large-6 columns petition-form">
+			<h3>Sign this petition</h3>
+
+			{% include "./user_form_wrapper.html" %}
+
+			{% include "./inline_tellafriend.html" %}
+
+			<div class="form-submit">
+				<button type="submit" class="large alert button">Sign</button>
+			</div> <!-- .form-submit -->
+
+			<div class="progress-meter-wrapper">
+				{% include "./progress_meter.html" %}
+			</div> <!-- .progress-meter-wrapper -->
+		</div> <!-- .petition-form -->
+	</div> <!-- .row -->
+</form>
+
+<!-- @END Development Template/petition.html -->
+{% endblock %}
