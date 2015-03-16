@@ -31,7 +31,7 @@
 
 	<meta name="title" content="{% client_name %} | {{ page.title }}" />
 	<meta property="twitter:account_id" content="14811485" />
-	
+
 	{% if page.custom_fields.meta_description %}
 		<meta name="description" content="{{ page.custom_fields.meta_description }}" />
 	{% endif %}  
@@ -69,6 +69,9 @@
 	
 	<!-- jQuery Cookie Plugin -->
 	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/jquery.cookie.js"></script>
+
+	<!-- jQuery Match Height Plugin -->
+	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/jquery.matchHeight-min.js" type="text/javascript"></script>
 </head>
 
 <body class="{{ filename|split:'.'|nth:0 }}-page lang-{{page.lang.iso_code|default:"unknown"}}{% if page.lang.is_rtl %} ak-rtl{% endif %} ak-no-js {{ page.type }}">
@@ -98,22 +101,26 @@
 
 		<div class="body-wrapper">
 			<div class="row">
-				<div id="body" class="body {% if page.custom_fields.show_sidebar %}large-9 main-half-column {% else %}large-12 {% endif %}columns">
+				<div id="body" class="body {% if page.custom_fields.show_sidebar %}large-9 small-12 main-half-column page-column {% else %}small-12 large-12 {% endif %}columns">
 					{% block content %}{% endblock %}
 				</div> <!-- .body -->
 
 				{% if page.custom_fields.show_sidebar %}
-					<div id="sidebar" class="sidebar large-2 sidebar-half-column columns">
-						{% if page.type == "Petition" %}
-							<h3>Recent Signatures</h3>
+					<div id="sidebar" class="sidebar large-2 small-12 sidebar-half-column page-column columns">
+						<div class="signature-wrapper">
+							{% if page.type == "Petition" %}
+								<h3>Recent Signatures</h3>
 
-							{% for a in page.recent_actions|unique:"user"|slice:":10" %}
-								<div class="signature">
-									{{ a.user.name }}<br>
-									{{ a.user.city }}, {{ a.user.state }}
-								</div> <!-- .signature -->
-							{% endfor %}
-						{% endif %}
+								<div class="row">
+									{% for a in page.recent_actions|unique:"user"|slice:":25" %}
+										<div id="signature-{{ forloop.counter }}" class="signature large-12 {% if forloop.last %}small-12 last {% else %}small-6 {% endif %} columns">
+											{{ a.user.name }}<br>
+											{{ a.user.city }}, {{ a.user.state }}
+										</div> <!-- .signature -->
+									{% endfor %}
+								</div> <!-- .row -->
+							{% endif %}
+						</div> <!-- .signature-wrapper -->
 					</div> <!-- .sidebar -->
 				{% endif %}
 			</div> <!-- .row -->
@@ -154,6 +161,49 @@
 		$(document).foundation();
 	</script>
 
+	{% if page.custom_fields.show_sidebar %}
+		{% if page.type == "Petition" %}
+			<style>
+				.signature { display: none; }
+				#sidebar { position: relative; }
+			</style>
+
+			<script>
+				$( document ).ready( function() {
+					$( '.page-column' ).matchHeight();
+
+					$.fn.matchHeight._beforeUpdate = function(event, groups) {
+						$( '.signature' ).each( function() {
+							$( this ).hide();
+						});
+					}
+
+					$.fn.matchHeight._afterUpdate = function(event, groups) {
+						// Store where we are in terms of height, starting at after the header
+						var offset = $( '#sidebar h3 ').outerHeight( true ) + $( '#sidebar h3' ).position().top;
+
+						// Get the maximum number of pixels we have to show stuff in
+						var maxHeight = groups[0]['elements'][1]['clientHeight'];
+
+						// Petition is capped at 25 recent signatures
+						for( var i = 1; i <= 25; i++ ) {
+							// Check if this signature DOM element actually exists
+							if( $( '#signature-' + i).length ) {
+								// If we show another item, will it go over our max height?
+								if( (offset + $( '#signature-' + i).outerHeight( true ) ) < maxHeight ) {
+									// It's okay to show this signature, so do so
+									$( '#signature-' + i ).show();
+
+									// Add this element's full height (including margin) to our offset
+									offset += $( '#signature-' + i ).outerHeight( true );
+								}
+							}
+						}
+					}
+				});
+			</script>
+		{% endif %}
+	{% endif %}
 {% comment %}
 	/*
 -------------------------------------------------------------------------------

@@ -16,11 +16,20 @@
 		color: $info-color;
 		text-transform: uppercase;
 	}
+
+	@media #{$small-only} {
+		margin-bottom: 3rem
+	}
 }
 
 .petition-form {
 	h3 {
 		text-transform: uppercase;
+	}
+
+	@media #{$small-only} {
+		margin-top: 3rem;
+		margin-bottom: 3rem;
 	}
 }
 
@@ -30,6 +39,29 @@
 
 		&:last-child {
 			margin-bottom: 0;
+		}
+
+		@media #{$small-only} {
+			display: block !important;
+
+			&.last {
+				text-align: center !important;				
+			}
+
+			&:nth-child(odd) {
+				text-align: right;
+			}
+		}
+	}
+
+	.signature-wrapper {
+		padding: 1rem;
+		background: white;
+	}
+
+	@media #{$small-only} {
+		h3 {
+			text-align: center;
 		}
 	}
 }

@@ -50,7 +50,9 @@
 		}
 	}
 
-	@media screen and (max-width: 455px) {
+	@media #{$small-only} {
+		margin-bottom: 0;
+
 		.logo {
 			width: 100%;
 		}

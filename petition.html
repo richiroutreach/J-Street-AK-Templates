@@ -6,7 +6,7 @@
 	<input type="hidden" name="page" value="{{ page.name }}">
 
 	<div class="row">
-		<div class="large-12 columns page-title">
+		<div class="small-12 columns page-title">
 			<h2>
 				{{ page.title }}
 
@@ -17,30 +17,18 @@
 		</div> <!-- .page-title -->
 	</div> <!-- .row -->
 
-	<div class="row">
-		<div class="large-12 columns page-ask">
-			{% autoescape off %}
-				{% include_tmpl form.about_text %}
-			{% endautoescape %}
-		</div> <!-- .page-ask -->
-	</div> <!-- .row -->
-
-	<div class="row">
-		<div class="large-6 columns petition-text-wrapper">
-			<div class="petition-text">
+	<div class="hide-for-small desktop-petition">
+		<div class="row">
+			<div class="large-12 columns page-ask">
 				{% autoescape off %}
-					{% if form.statement_leadin %}
-						<div class="lead-in">
-							{% include_tmpl form.statement_leadin %}
-						</div> <!-- .lead-in -->
-					{% endif %}
-
-					{% include_tmpl form.statement_text %}
+					{% include_tmpl form.about_text %}
 				{% endautoescape %}
-			</div> <!-- .petition-text -->
-		</div> <!-- .petition-text-wrapper -->
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .desktop-petition -->
 
-		<div class="large-6 columns petition-form">
+	<div class="row">
+		<div class="large-6 columns large-push-6 petition-form">
 			<h3>Sign this petition</h3>
 
 			{% include "./user_form_wrapper.html" %}
@@ -55,7 +43,31 @@
 				{% include "./progress_meter.html" %}
 			</div> <!-- .progress-meter-wrapper -->
 		</div> <!-- .petition-form -->
+
+		<div class="large-6 columns large-pull-6 petition-text-wrapper">
+			<div class="petition-text">
+				{% autoescape off %}
+					{% if form.statement_leadin %}
+						<div class="lead-in">
+							{% include_tmpl form.statement_leadin %}
+						</div> <!-- .lead-in -->
+					{% endif %}
+
+					{% include_tmpl form.statement_text %}
+				{% endautoescape %}
+			</div> <!-- .petition-text -->
+		</div> <!-- .petition-text-wrapper -->
 	</div> <!-- .row -->
+
+	<div class="show-for-small mobile-petition">
+		<div class="row">
+			<div class="small-12 columns page-ask">
+				{% autoescape off %}
+					{% include_tmpl form.about_text %}
+				{% endautoescape %}
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .desktop-petition -->
 </form>
 
 <!-- @END Development Template/petition.html -->
