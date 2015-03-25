@@ -16,6 +16,9 @@ $body-font-family: 'Montserrat', sans-serif;
 $google: #dd4b39;
 $facebook: #3b5998;
 $twitter: #4099FF;
+$orangered: #ff4500;
+$jstreetBlue: #62cacf;
+$black: #000000;
 
 @import "settings";
 @import "foundation";
@@ -24,6 +27,7 @@ $twitter: #4099FF;
 @import "actionkit/header";
 @import "actionkit/thanks";
 @import "actionkit/petition";
+@import "actionkit/signup";
 
 // Or selectively include components
 // @import

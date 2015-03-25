@@ -2,34 +2,33 @@
 
 {% block content %}
 
-<h2>{{ page.title }}</h2>
+	<h2>{{ page.title }}</h2>
 
-<div id="signup-story" class="col end">
+	<div id="signup-story" class="large-12 medium-12 small-12 columns col end">
 
-{% autoescape off %}
+		{% autoescape off %}
 
-<div class="ak-abovefold">{% include_tmpl form.introduction_text %}</div>
+		<div class="ak-abovefold">{% include_tmpl form.introduction_text %}</div>
 
-{% endautoescape %}
+		{% endautoescape %}
 
-{% include "./progress_meter.html" %}
-</div>
+		{% include "./progress_meter.html" %}
+	</div>
 
-<div id="signup-form" class="col border">
+	<div id="signup-form" class="large-12 medium-12 small-12 columns col border">
 
-<div class="ak-mobile-lead"></div>
+	<div class="large-8 medium-8 small-12 columns ak-mobile-lead"></div>
 
-<form class="action_form" name="act" method="POST" action="/act/" accept-charset="utf-8">
+	<form class="large-4 medium-4 small-12 columns action_form" name="act" method="POST" action="/act/" accept-charset="utf-8">
 
-{% include "./user_form_wrapper.html" %}
+		{% include "./user_form_wrapper.html" %}
 
-<button type="submit">Sign Up</button>
+		<button type="submit">Sign Up</button>
 
-<input type="hidden" name="page" value="{{ page.name }}">
+		<input type="hidden" name="page" value="{{ page.name }}">
 
-</div>
+		</div>
 
-
-</form>
+	</form>
 
 {% endblock %}

@@ -1,0 +1,34 @@
+/*
+	---------------------------------------------------------------------------
+		Signup Specific Styles
+	---------------------------------------------------------------------------
+*/
+
+.signup-page {
+	.button {
+		background-color: $orangered;
+		border-radius: 5px;
+		padding: 0.5rem 3rem;
+		text-transform: uppercase;
+		font-size: 1.25rem;
+		font-weight: bold;
+
+		&:hover {
+			background-color: darken($orangered, 10);
+		}
+	}
+
+	form.action_form {
+		text-align: center;
+
+		input[type="text"], input[type="password"], 
+		input[type="date"], input[type="datetime"], 
+		input[type="datetime-local"], input[type="month"], 
+		input[type="week"], input[type="email"], 
+		input[type="number"], input[type="search"], 
+		input[type="tel"], input[type="time"], 
+		input[type="url"], input[type="color"], textarea {
+			border: 1px solid $black;
+		}
+	}
+}
