@@ -72,6 +72,18 @@
 
 	<!-- jQuery Match Height Plugin -->
 	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/jquery.matchHeight-min.js" type="text/javascript"></script>
+
+	{% if page.custom_fields.background_image %}
+		<style>
+			body {
+				background: url('{{ page.custom_fields.background_image }}') no-repeat center center fixed; 
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
+	{% endif %}
 </head>
 
 <body class="{{ filename|split:'.'|nth:0 }}-page lang-{{page.lang.iso_code|default:"unknown"}}{% if page.lang.is_rtl %} ak-rtl{% endif %} ak-no-js {{ page.type }}">
@@ -101,11 +113,11 @@
 
 		<div class="body-wrapper">
 			<div class="row">
-				<div id="body" class="body {% if page.custom_fields.show_sidebar %}large-9 small-12 main-half-column page-column {% else %}small-12 large-12 {% endif %}columns">
+				<div id="body" class="body {% if page.custom_fields.show_sidebar and filename|split:'.'|nth:0 != 'thanks' %}large-9 small-12 main-half-column page-column {% else %}small-12 large-12 {% endif %}columns">
 					{% block content %}{% endblock %}
 				</div> <!-- .body -->
 
-				{% if page.custom_fields.show_sidebar %}
+				{% if page.custom_fields.show_sidebar and filename|split:'.'|nth:0 != 'thanks' %}
 					<div id="sidebar" class="sidebar large-2 small-12 sidebar-half-column page-column columns">
 						<div class="signature-wrapper">
 							{% if page.type == "Petition" %}
@@ -113,10 +125,12 @@
 
 								<div class="row">
 									{% for a in page.recent_actions|unique:"user"|slice:":25" %}
-										<div id="signature-{{ forloop.counter }}" class="signature large-12 {% if forloop.last %}small-12 last {% else %}small-6 {% endif %} columns">
-											{{ a.user.name }}<br>
-											{{ a.user.city }}, {{ a.user.state }}
-										</div> <!-- .signature -->
+										{% if a.user.city %}
+											<div id="signature-{{ forloop.counter }}" class="signature large-12 {% if forloop.last and not forloop.counter|divisibleby:2 %}small-12 last {% else %}small-6 {% endif %} columns">
+												{{ a.user.name }}<br>
+												{{ a.user.city }}, {{ a.user.state }}
+											</div> <!-- .signature -->
+										{% endif %}
 									{% endfor %}
 								</div> <!-- .row -->
 							{% endif %}

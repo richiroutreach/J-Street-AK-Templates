@@ -5,7 +5,7 @@
 */
 
 body {
-	background: url("https://s3.amazonaws.com/s3.jstreet.org/foundation/img/stone_bg.jpg") no-repeat center center fixed; 
+	background: url('https://s3.amazonaws.com/s3.jstreet.org/foundation/img/stone_bg.jpg') no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -32,13 +32,13 @@ body {
 	border-radius: 5px;
 
 	&.alert {
-		background: $primary-color;
-		color: $info-color;
+		background: $alert-button-color;
+		color: white;
 		text-transform: uppercase;
 		transition: 300ms ease-out;
 
-		&:hover {
-			background: $info-color;
+		&:hover, &:active {
+			background: darken($alert-button-color, 10);
 		}
 	}
 }
@@ -64,6 +64,11 @@ body {
 		img {
 			margin-right: 1rem;
 			margin-bottom: 1rem;
+
+			@media #{$small-only} {
+				margin: 0 auto 1rem auto;
+				width: 100%;
+			}
 		}
 	}
 }
@@ -75,6 +80,11 @@ body {
 	button.large.alert {
 		padding: 0.5rem 7rem;
 		font-size: 2rem;
+
+		@media #{$small-only} {
+			padding: 0.5rem;
+			width: 100%;
+		}
 	}
 }
 
@@ -97,6 +107,9 @@ ul.ak-err {
 	}
 }
 
+.ak-inline-taf {
+	display: none;
+}
 
 /*
 	---------------------------------------------------------------------------

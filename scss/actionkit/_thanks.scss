@@ -1,0 +1,106 @@
+/*
+	---------------------------------------------------------------------------
+		Thank You Page Specific Styles
+	---------------------------------------------------------------------------
+*/
+
+#body {
+	.taf-wrapper {
+		& > .row {
+			margin: 0;
+		
+			.medium-12:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+
+	}
+}
+
+.email-wrapper {
+	margin-top: 2rem;
+
+	.diy-email, .ak-email {
+		a {
+			width: 100%;
+			text-transform: none;
+			padding-left: 0;
+			padding-right: 0;
+
+			.fa {
+				transition: 300ms;
+				margin-left: 1rem;
+			}
+
+			&.expanded {
+				.fa {
+					transform: rotate(90deg);
+				}
+			}
+		}
+	}
+}
+
+#email-taf {
+	padding: 1rem;
+	background: rgba($ask-bg, 0.25);
+	margin-bottom: 3rem;
+
+	label {
+		font-size: 1.15rem;
+		color: $info-color;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	& > div {
+		margin-bottom: 2rem;
+	}
+
+	.button {
+		.fa {
+			margin-left: 1rem;
+		}
+	}
+
+	@media #{$large-up} {
+		margin-bottom: 0rem;
+	}
+}
+
+.sharebox {
+	background: rgba($ask-bg, 0.25);
+	padding: 1rem !important;
+	margin-bottom: 3rem;
+	text-align: center;
+
+	.fa {
+		float: left;
+		font-size: 5rem;
+		margin-right: 1rem;
+
+		&.fa-facebook-square {
+			color: $facebook;
+		}
+
+		&.fa-twitter-square {
+			color: $twitter;
+		}
+	}
+
+	.text {
+		.tweet-text {
+			padding: 0.5rem;
+			border: 1px solid $primary-color;
+			margin-bottom: 1rem;
+			background: white;
+		}
+	}
+
+	.share-button {
+		@extend .button;
+		width: 100%;
+
+	}
+}

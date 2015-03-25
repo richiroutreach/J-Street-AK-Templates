@@ -1,10 +1,15 @@
 @import url(http://fonts.googleapis.com/css?family=Montserrat);
 
 $primary-color: #191b27;
-$secondary-color: #dcffff;
+//$primary-color: #28c4d8;
+//$secondary-color: #dcffff;
+$secondary-color: #28c4d8;
 $info-color: #1cacac;
 
-$ask-bg: #dcffff;
+$alert-button-color: #fd3600;
+
+//$ask-bg: #dcffff;
+$ask-bg: #28c4d8;
 
 $body-font-family: 'Montserrat', sans-serif;
 
@@ -17,6 +22,7 @@ $twitter: #4099FF;
 
 @import "actionkit/general";
 @import "actionkit/header";
+@import "actionkit/thanks";
 @import "actionkit/petition";
 
 // Or selectively include components
