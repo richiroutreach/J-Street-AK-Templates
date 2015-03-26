@@ -1,34 +1,53 @@
 {% extends "./wrapper.html" %}{% load actionkit_tags %}
+<!-- @START Development Template/signup.html -->
 
 {% block content %}
-
-	<h2>{{ page.title }}</h2>
-
-	<div id="signup-story" class="large-12 medium-12 small-12 columns col end">
-
-		{% autoescape off %}
-
-			<div class="ak-abovefold">{% include_tmpl form.introduction_text %}</div>
-
-		{% endautoescape %}
-
-		{% include "./progress_meter.html" %}
-	</div>
-
-	<div id="signup-form" class="large-12 medium-12 small-12 columns col border">
-
-	<div class="large-8 medium-8 small-12 columns ak-mobile-lead"></div>
-
-	<form class="large-4 medium-4 small-12 columns action_form" name="act" method="POST" action="/act/" accept-charset="utf-8">
-
-		{% include "./user_form_wrapper.html" %}
-
-		<button type="submit">Sign Up</button>
-
+	<form name="act" id="act" method="POST" action="/act/" accept-charset="utf-8">
 		<input type="hidden" name="page" value="{{ page.name }}">
 
-		</div>
+		<div class="row">
+			<div class="small-12 columns page-title">
+				<h2>
+					{{ page.title }}
 
+					{% if page.custom_fields.page_subtitle %}
+						<br><span class="subtitle">{{ page.custom_fields.page_subtitle }}</span>
+					{% endif %}
+				</h2>
+			</div> <!-- .page-title -->
+		</div> <!-- .row -->
+
+		<div class="row">
+			<div id="signup-story" class="hide-for-small desktop-signup">
+				<div class="large-8 medium-6 columns page-ask">
+					{% autoescape off %}
+						{% include_tmpl form.introduction_text %}
+					{% endautoescape %}
+			
+					{% include "./progress_meter.html" %}
+				</div> <!-- .page-ask -->
+			</div> <!-- .desktop-signup -->
+
+			<div id="signup-form" class="large-4 medium-6 small-12 columns">
+				<h3 class="form-header">Sign up</h3>
+
+				{% include "./user_form_wrapper.html" %}
+
+				<div class="form-submit">
+					<button type="submit" class="large alert">Sign Up</button>
+				</div> <!-- .form-submit -->
+			</div> <!-- #signup-form -->
+		</div> <!-- .row -->
 	</form>
 
+	<div class="show-for-small mobile-signup">
+		<div class="row">
+			<div class="small-12 columns page-ask">
+				{% autoescape off %}
+					{% include_tmpl form.introduction_text %}
+				{% endautoescape %}
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .mobile-signup -->
 {% endblock %}
+<!-- @END Development Template/signup.html -->

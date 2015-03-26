@@ -1,0 +1,86 @@
+/*
+	---------------------------------------------------------------------------
+		General Form Styles
+	---------------------------------------------------------------------------
+*/
+
+.form-submit {
+	text-align: center;
+	margin-top: 2rem;
+
+	button.large.alert {
+		padding: 0.5rem 7rem;
+		font-size: 2rem;
+
+		@media #{$medium-only} {
+			padding: 0.5rem 3rem;
+		}
+
+		@media #{$small-only} {
+			padding: 0.5rem;
+			width: 100%;
+		}
+	}
+}
+
+.ak-labels-overlaid {
+	position: relative;
+
+	label {
+		text-transform: none;
+	}
+}
+
+.js {
+	.ak-labels-overlaid {
+		div {
+			position: relative;
+		}
+
+		label {
+			position: absolute;
+			padding: 0.5rem;
+			margin-left: 0.5rem;
+			color: rgb(100,100,100);
+			/* These are redundant, but IE7 needs them */
+			left: 0px;
+			z-index: 1;
+
+			&.active {
+				  color: rgb(140,140,140);
+			}
+
+			&.has-content {
+			  display: none;
+			}
+		}
+	}
+}
+
+#act {
+	label {
+		margin-bottom: 0.5rem;
+	}
+
+	.uppercase {
+		text-transform: uppercase;
+
+		em {
+			font-style: italic;
+		}
+
+		span {
+			text-transform: none;
+			display: block;
+			font-size: 0.75rem;
+		}
+
+		strong {
+			font-weight: bold;
+		}
+	}
+
+	.form-header {
+		text-transform: uppercase;
+	}
+}

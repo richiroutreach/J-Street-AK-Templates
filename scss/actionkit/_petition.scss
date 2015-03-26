@@ -27,10 +27,6 @@
 }
 
 .petition-form {
-	h3 {
-		text-transform: uppercase;
-	}
-
 	@media #{$small-only} {
 		margin-top: 3rem;
 		margin-bottom: 3rem;

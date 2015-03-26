@@ -28,7 +28,7 @@ body {
 	}
 }
 
-.button {
+button, .button {
 	border-radius: 5px;
 
 	&.alert {
@@ -69,21 +69,6 @@ body {
 				margin: 0 auto 1rem auto;
 				width: 100%;
 			}
-		}
-	}
-}
-
-.form-submit {
-	text-align: center;
-	margin-top: 2rem;
-
-	button.large.alert {
-		padding: 0.5rem 7rem;
-		font-size: 2rem;
-
-		@media #{$small-only} {
-			padding: 0.5rem;
-			width: 100%;
 		}
 	}
 }
