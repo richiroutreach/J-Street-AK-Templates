@@ -1,0 +1,28 @@
+/*
+	---------------------------------------------------------------------------
+		Call page Styling (call.html)
+	---------------------------------------------------------------------------
+*/
+
+#call-story {
+	#ak-errors {
+		margin-bottom: 0;
+	}
+
+	#unknown_user {
+		margin-top: 1.25rem;
+	}
+
+	#script_intro {
+		color: $primary-color;
+		font-weight: bold;
+		margin-bottom: 1rem;
+		font-size: 1.15rem;
+	}
+
+	#what_to_say {
+		background: rgba($secondary-color, 0.25);
+		padding: 1rem;
+		border: 1px solid $secondary-color;
+	}
+}

@@ -1,87 +1,103 @@
 {% extends "./wrapper.html" %}{% load actionkit_tags %}
 {% block content %}
+	<!-- @START Development Template/call.html -->
+	<form id="act" class="ak-form" name="act" method="POST" action="/act/" accept-charset="utf-8">
+		<input type="hidden" name="page" value="{{ page.name }}">
 
-<h2>{{ page.title }}</h2>
+		<div class="row">
+			<div class="small-12 columns page-title">
+				<h2>
+					{{ page.title }}
 
-<form class="ak-form" name="act" method="POST" action="/act/" accept-charset="utf-8">
+					{% if page.custom_fields.page_subtitle %}
+						<br><span class="subtitle">{{ page.custom_fields.page_subtitle }}</span>
+					{% endif %}
+				</h2>
+			</div> <!-- .page-title -->
+		</div> <!-- .row -->
 
-<div id="call-story" class="col">
+		<div class="row">
+			<div class="hide-for-small desktop-call">
+				<div class="large-8 medium-6 columns page-ask">
+					{% autoescape off %}
+						{% include_tmpl form.introduction_text %}
+					{% endautoescape %}
+				</div> <!-- .page-ask -->
 
-{% autoescape off %}
+				<div class="progress-meter-wrapper">
+					{% include "./progress_meter.html" %}
+				</div> <!-- .progress-meter-wrapper -->
+			</div> <!-- .desktop-call -->
 
-{% include_tmpl form.introduction_text %}
+			<div id="call-story" class="large-4 columns medium-6 small-12 columns">
+				<div id="need_contact_info"></div>
 
-{% endautoescape %}
+				<script type="text/ak-template" for="need_contact_info">
+					[% if (incomplete) { %]
+						<div>{% filter ak_text:"call_needs_contact_info" %}Fill out the form below so we can find the number for you to call.{% endfilter %}</div>
+					[% } %]
+				</script>
 
-{% include "./progress_meter.html" %}
+				{% include "./user_form_wrapper.html" %}
 
-</p>
+				<div id="what_to_say" class="ak-quote"></div>
+				
+				<script type="text/ak-template" for="what_to_say">
+					[% if (!incomplete) { %]
+						<div id="script_intro">Call and say:</div>
+						{% include_tmpl form.script_text %}
+					[% } %]
 
+					[% if (incomplete) { %]
+						<style>
+							#what_to_say {
+								display: none;
+							}
+						</style>
+					[% } %]
+				</script>
 
+				<div id="who_called"></div>
+				
+				<script type="text/ak-template" for="who_called">
+					[% if (!incomplete) { %]
+						<br>
 
-</div>
+						<div>Who did you call?</div>
+					[% } %]
+				</script>
 
-<div id="call-form" class="col ak-styled-fields ak-border-left">
+				<div id="target_checkboxes"></div>
 
-<div id="need_contact_info"></div>
-<script type="text/ak-template" for="need_contact_info">
-[% if (incomplete) { %]
-<div>{% filter ak_text:"call_needs_contact_info" %}Fill out the form below so we can find the number for you to call.{% endfilter %}</div>
-[% } %]
-</script>
+				<div class="ak-labels-overlaid" id="ak-survey_question"></div>
 
-{% include "./user_form_wrapper.html" %}
+				{% if form.survey_question_text %}
+					<script type="text/ak-template" for="ak-survey_question">
+						[% if (!incomplete) { %]
+							{% autoescape off %}
+								<label for="id_action_survey">{% include_tmpl form.survey_question_text %}</label>
+							{% endautoescape %}
 
+							<textarea id="id_action_survey" name="action_survey"></textarea>
+						[% } %]
+					</script>
+				{% endif %}
 
-<div id="what_to_say" class="ak-quote"></div>
-<script type="text/ak-template" for="what_to_say">
-[% if (!incomplete) { %]
-<div id="script_intro">Call and say:</div>
-{% include_tmpl form.script_text %}
-[% } 
-%]
+				<div class="form-submit">
+					<button type="submit" class="large alert">Submit</button>
+				</div> <!-- .form-submit -->
+			</div> <!-- #call-story -->
+		</div> <!-- .row -->
 
-[% if (incomplete) { %]
-<style>
-#what_to_say {
-display: none;
-}
-</style>
-[% } 
-%]
-
-</script>
-
-
-<div id="who_called"></div>
-<script type="text/ak-template" for="who_called">
-[% if (!incomplete) { %]
-<br>
-<div>Who did you call?</div>
-[% } %]
-</script>
-
-<div id="target_checkboxes"></div>
-
-<div class="ak-labels-overlaid" id="ak-survey_question"></div>
-{% if form.survey_question_text %}
-<script type="text/ak-template" for="ak-survey_question">
-[% if (!incomplete) { %]
-{% autoescape off %}
-<label for="id_action_survey">{% include_tmpl form.survey_question_text %}</label>
-{% endautoescape %}
-<textarea id="id_action_survey" name="action_survey"></textarea>
-[% } %]
-</script>
-{% endif %}
-
-<input type="hidden" name="page" value="{{ page.name }}">
-
-<p style="clear: both;">
-<button type="submit" class="ak-styled-submit-button">Submit</button>
-
-</div>
-
-</form>
-
+		<div class="show-for-small mobile-call">
+			<div class="row">
+				<div class="small-12 columns page-ask">
+					{% autoescape off %}
+						{% include_tmpl form.introduction_text %}
+					{% endautoescape %}
+				</div> <!-- .page-ask -->
+			</div> <!-- .row -->
+		</div> <!-- .mobile-call -->		
+	</form>
+	<!-- @END Development Template/call.html -->
 {% endblock %}
