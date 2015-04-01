@@ -47,11 +47,11 @@
 			z-index: 1;
 
 			&.active {
-				  color: rgb(140,140,140);
+				color: rgb(140,140,140);
 			}
 
 			&.has-content {
-			  display: none;
+				display: none;
 			}
 		}
 	}
@@ -92,7 +92,7 @@
 	}
 }
 
-#unsub-form {
+#unsub-form, #login-form {
 	input[type="text"], input[type="password"], 
 	input[type="date"], input[type="datetime"], 
 	input[type="datetime-local"], input[type="month"], 
