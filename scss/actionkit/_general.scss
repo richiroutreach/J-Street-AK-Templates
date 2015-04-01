@@ -38,7 +38,9 @@ button, .button {
 		transition: 300ms ease-out;
 
 		&:hover, &:active {
-			background: lighten($alert-button-color, 5);
+			//background: darken($alert-button-color, 10);
+			//background: lighten($alert-button-color, 5);
+			background: #464852;
 		}
 	}
 }
