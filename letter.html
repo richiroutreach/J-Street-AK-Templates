@@ -50,7 +50,9 @@
 						<div class="lead-in">
 							{% include_tmpl form.statement_leadin %}
 
-							<textarea id="id_comment" name="action_comment" style="">{% include_tmpl form.letter_text escaped %}</textarea>
+							<textarea id="id_comment" name="action_comment" style="">
+								{% include_tmpl form.letter_text escaped %}
+							</textarea>
 						</div> <!-- .lead-in -->
 					{% endif %}
 
