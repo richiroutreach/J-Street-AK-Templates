@@ -35,7 +35,10 @@
 			{% include "./inline_tellafriend.html" %}
 
 			<div class="form-submit">
-				<button type="submit" class="large alert button">send Letter</button>
+				<button type="submit" class="large alert button">Send Letter</button>
+
+				<input type="hidden" name="page" value="{{ page.name }}">
+				<input type="hidden" name="required" value="country">
 			</div> <!-- .form-submit -->
 
 			<div class="progress-meter-wrapper">

@@ -1,42 +1,77 @@
 {% extends "./wrapper.html" %}{% load actionkit_tags %}
-
 {% block content %}
-
-<h2>{{ page.title }}</h2>
+<!-- @START Development Template/survey.html -->
 
 
 <form class="ak-form" name="act" method="POST" action="/act/" accept-charset="utf-8">
 
-<div class="area ak-mobile-padding">{% include_tmpl form.introduction_text %}</div>
+	<div class="row">
+		<div class="small-12 columns page-title">
+			<h2>
+				{{ page.title }}
 
-<div id="survey-contact" class="col ak-styled-fields ak-styled-zip">
-{% include "./user_form_wrapper.html" %}
-</div>
+				{% if page.custom_fields.page_subtitle %}
+					<br><span class="subtitle">{{ page.custom_fields.page_subtitle }}</span>
+				{% endif %}
+			</h2>
+		</div> <!-- .page-title -->
+	</div> <!-- .row -->
 
-<div id="survey-questions" class="col ak-labels-above ak-styled-fields ak-styled-description ak-padding-top-none">
-{% autoescape off %}
+	<div class="hide-for-small desktop-survey">
+		<div class="row">
+			<div class="large-12 columns page-ask">
+				{% autoescape off %}
+					{% include_tmpl form.introduction_text %}
+				{% endautoescape %}
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .desktop-survey -->
 
-{% for question in form.surveyquestion_set.all %}
-   <div>
-    <label>{{ question.question_label }}</label>
-    {{ question.question_html }}
-   </div>
-{% endfor %}
+	<div class="row">
+		<div id="survey-form" class="large-6 columns large-push-6 survey-form">
 
-<button type="submit" class="ak-styled-submit-button">Submit Survey</button>
+			{% include "./user_form_wrapper.html" %}
 
+			{% include "./inline_tellafriend.html" %}
 
-<input type="hidden" name="page" value="{{ page.name }}">
-<input type="hidden" name="required" value="country">
+			<div class="form-submit">
+				<button type="submit" class="large alert button">Submit Survey</button>
 
+				<input type="hidden" name="page" value="{{ page.name }}">
+				<input type="hidden" name="required" value="country">
+			</div> <!-- .form-submit -->
 
-{% endautoescape %}
+			<div class="progress-meter-wrapper">
+				{% include "./progress_meter.html" %}
+			</div> <!-- .progress-meter-wrapper -->
+		</div> <!-- .survey-form -->
 
-{% include "./progress_meter.html" %}
-</div>
+		<div class="large-6 columns large-pull-6 survey-text-wrapper">
+			<div class="surveytext">
+				{% autoescape off %}
+					{% for question in form.surveyquestion_set.all %}
+						<div>
+							<label class="labels_quest">{{ question.question_label }}</label>
+							{{ question.question_html }}
+						</div>
+					{% endfor %}
 
+					{% include_tmpl form.statement_text %}
+				{% endautoescape %}
+			</div> <!-- .survey-text -->
+		</div> <!-- .survey-text-wrapper -->
+	</div> <!-- .row -->
+
+		<div class="show-for-small mobile-survey">
+		<div class="row">
+			<div class="small-12 columns page-ask">
+				{% autoescape off %}
+					{% include_tmpl form.about_text %}
+				{% endautoescape %}
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .desktop-survey -->
 </form>
 
+<!-- @END Development Template/survey.html -->
 {% endblock %}
-
-
