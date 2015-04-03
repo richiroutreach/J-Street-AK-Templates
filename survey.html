@@ -50,9 +50,11 @@
 			<div class="surveytext">
 				{% autoescape off %}
 					{% for question in form.surveyquestion_set.all %}
-						<div>
-							<label class="labels_quest">{{ question.question_label }}</label>
-							{{ question.question_html }}
+						<div class="row">
+							<div class="large-12 columns">
+								<label class="labels_quest">{{ question.question_label }}</label>
+								{{ question.question_html }}
+							</div>
 						</div>
 					{% endfor %}
 
