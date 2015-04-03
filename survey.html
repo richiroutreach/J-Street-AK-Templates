@@ -51,7 +51,7 @@
 				{% autoescape off %}
 					{% for question in form.surveyquestion_set.all %}
 						<div class="row">
-							<div class="large-12 columns">
+							<div class="large-12 columns question-answer">
 								<label class="labels_quest">{{ question.question_label }}</label>
 								{{ question.question_html }}
 							</div>
