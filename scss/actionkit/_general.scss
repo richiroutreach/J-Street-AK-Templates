@@ -175,7 +175,8 @@ ul.ak-err {
 		}
 	}
 
-	@media only screen and (max-width: 1499px) {
+	// was set to 1499 the links start to overlap the body content at 1610 for the width.
+	@media only screen and (max-width: 1610px) {
 		display: none;
 	}
 }
