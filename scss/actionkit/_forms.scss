@@ -9,16 +9,23 @@
 	margin-top: 2rem;
 
 	button.large.alert {
-		padding: 0.5rem 7rem;
 		font-size: 2rem;
+		padding: 0.5rem;
+		width: 100%;
 
-		@media #{$medium-only} {
-			padding: 0.5rem 3rem;
+		@media #{$medium-up} {
+			padding: 0.5rem 3rem;	
+			width: auto;
 		}
 
-		@media #{$small-only} {
-			padding: 0.5rem;
-			width: 100%;
+		@media #{$large-up} {
+			padding: 0.5rem 5rem;
+			width: auto;
+		}
+
+		@media #{$xlarge-up} {
+			padding: 0.5rem 7rem;
+			width: auto;
 		}
 	}
 }

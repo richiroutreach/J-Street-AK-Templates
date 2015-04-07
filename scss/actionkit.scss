@@ -13,6 +13,7 @@ $ask-bg: #28c4d8;
 
 $body-font-family: 'Montserrat', sans-serif;
 
+$errorColor: #980002;
 $google: #dd4b39;
 $facebook: #3b5998;
 $twitter: #4099FF;
@@ -32,6 +33,7 @@ $black: #000000;
 @import "actionkit/signup";
 @import "actionkit/donate";
 @import "actionkit/call";
+@import "actionkit/errors";
 
 // Or selectively include components
 // @import

@@ -103,4 +103,26 @@
 		width: 100%;
 
 	}
+
+	.facebook-share {
+		padding-bottom: 1rem;
+
+		.fb-share-image {
+			img {
+				border: 1px solid $primary-color;
+			}
+		}
+		
+		.fb-share-text {
+			border: 1px solid $primary-color;
+			background: white;
+			padding: 0.25rem;
+			font-size: 12px;
+			
+			h3 {
+				font-size: 14px;
+				color: $info-color;
+			}
+		}
+	}
 }
