@@ -15,7 +15,7 @@
 <p class="errornote">{{ error_message }}</p>
 {% endif %}
 {% if invalid %}
-<p class="errornote">Incorrect e-mail or password.  Try again, or <a href="{% url 'user_password_forgot' %}?next={{ next }}&email={{ email }}">we can e-mail you a link to reset your password</a>.</p>
+<p class="errornote">Incorrect e-mail or password.  Try again, or <a href="{% url 'user_password_forgot' %}?next={{ next }}&amp;email={{ email }}">we can e-mail you a link to reset your password</a>.</p>
 {% endif %}
 
 
@@ -39,8 +39,8 @@
     <button type="submit">Log In</button>
   </div>
 
-<div class="ak-clear"><a href="{% url 'user_password_forgot' %}?next={{ next }}&email={{ email }}">Forgot your password?</a></div>
-<div><a href="{% url 'user_password_forgot' %}?next={{ next }}&first=1&email={{ email }}">Never logged in before?</a></div>
+<div class="ak-clear"><a href="{% url 'user_password_forgot' %}?next={{ next }}&amp;email={{ email }}" class="forgot_link">Forgot your password?</a></div>
+<div><a href="{% url 'user_password_forgot' %}?next={{ next }}&amp;first=1&amp;email={{ email }}" class="never_link">Never logged in before?</a></div>
 
 </form>
 </div>
