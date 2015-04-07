@@ -107,6 +107,7 @@ ul.ak-err {
 		Sidebar Styles
 	---------------------------------------------------------------------------
 */
+
 .sidebar {
 	background: white;
 	padding: 1rem;
@@ -121,7 +122,6 @@ ul.ak-err {
 		background: rgba(white, 0.8);		
 	}
 }
-
 
 /*
 	---------------------------------------------------------------------------
@@ -178,5 +178,17 @@ ul.ak-err {
 	// was set to 1499 the links start to overlap the body content at 1610 for the width.
 	@media only screen and (max-width: 1610px) {
 		display: none;
+	}
+}
+
+/*
+	---------------------------------------------------------------------------
+		login page links
+	---------------------------------------------------------------------------
+*/
+
+.forgot_link, .never_link {
+	&:hover, &:active {
+		color: lighten($alert-button-color, 5);
 	}
 }
