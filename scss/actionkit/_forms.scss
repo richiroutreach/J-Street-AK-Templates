@@ -54,11 +54,11 @@
 			z-index: 1;
 
 			&.active {
-				  color: rgb(140,140,140);
+				color: rgb(140,140,140);
 			}
 
 			&.has-content {
-			  display: none;
+				display: none;
 			}
 		}
 	}
@@ -97,4 +97,20 @@
 	.form-header {
 		text-transform: uppercase;
 	}
+}
+
+#unsub-form, #login-form {
+	input[type="text"], input[type="password"], 
+	input[type="date"], input[type="datetime"], 
+	input[type="datetime-local"], input[type="month"], 
+	input[type="week"], input[type="email"], 
+	input[type="number"], input[type="search"], 
+	input[type="tel"], input[type="time"], 
+	input[type="url"], input[type="color"], textarea {
+		width: 15%;
+	}
+}
+
+#id_comment {
+	height: 200px;
 }

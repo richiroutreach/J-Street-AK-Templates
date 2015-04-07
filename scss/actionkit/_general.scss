@@ -41,6 +41,12 @@ button, .button {
 			background: darken($alert-button-color, 25);
 		}
 	}
+
+	&:hover, &:active {
+		//background: darken($alert-button-color, 10);
+		background: lighten($alert-button-color, 5);
+		//background: #464852;
+	}
 }
 
 .page-title {
@@ -169,7 +175,8 @@ ul.ak-err {
 		}
 	}
 
-	@media only screen and (max-width: 1499px) {
+	// was set to 1499 the links start to overlap the body content at 1610 for the width.
+	@media only screen and (max-width: 1610px) {
 		display: none;
 	}
 }

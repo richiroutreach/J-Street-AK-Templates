@@ -1,40 +1,80 @@
 {% extends "./wrapper.html" %}{% load actionkit_tags %}
-
 {% block content %}
+<!-- @START Development Template/letter.html -->
+
 
 <form class="ak-form" name="act" method="POST" action="/act/" accept-charset="utf-8">
 
-<h2>{{ page.title }}</h2>
+	<div class="row">
+		<div class="small-12 columns page-title">
+			<h2>
+				{{ page.title }}
 
-<div id="letter-form" class="col border">
+				{% if page.custom_fields.page_subtitle %}
+					<br><span class="subtitle">{{ page.custom_fields.page_subtitle }}</span>
+				{% endif %}
+			</h2>
+		</div> <!-- .page-title -->
+	</div> <!-- .row -->
 
+	<div class="hide-for-small desktop-letter">
+		<div class="row">
+			<div class="large-12 columns page-ask">
+				{% autoescape off %}
+					{% include_tmpl form.about_text %}
+				{% endautoescape %}
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .desktop-letter -->
 
-{% include "./user_form_wrapper.html" %}
+	<div class="row">
+		<div id="letter-form" class="large-6 columns large-push-6 letter-form">
 
-{% include "./inline_tellafriend.html" %}
-<input type="hidden" name="page" value="{{ page.name }}">
+			{% include "./user_form_wrapper.html" %}
 
-<button type="submit">Send Letter</button>
+			{% include "./inline_tellafriend.html" %}
 
+			<div class="form-submit">
+				<button type="submit" class="large alert button">Send Letter</button>
 
+				<input type="hidden" name="page" value="{{ page.name }}">
+				<input type="hidden" name="required" value="country">
+			</div> <!-- .form-submit -->
 
-</div>
+			<div class="progress-meter-wrapper">
+				{% include "./progress_meter.html" %}
+			</div> <!-- .progress-meter-wrapper -->
+		</div> <!-- .letter-form -->
 
-<div id="letter-story" class="col">
+		<div class="large-6 columns large-pull-6 letter-text-wrapper">
+			<div class="letter-text">
+				{% autoescape off %}
+					{% if form.statement_leadin %}
+						<div class="lead-in">
+							{% include_tmpl form.statement_leadin %}
 
-{% autoescape off %}
+							<textarea id="id_comment" name="action_comment" style="">
+								{% include_tmpl form.letter_text escaped %}
+							</textarea>
+						</div> <!-- .lead-in -->
+					{% endif %}
 
-<div class="box">{% if form.statement_leadin %}{% include_tmpl form.statement_leadin %} {% endif %}
-<textarea id="id_comment" name="action_comment" style="">{% include_tmpl form.letter_text escaped %}</textarea>
-</div>
+					{% include_tmpl form.statement_text %}
+				{% endautoescape %}
+			</div> <!-- .letter-text -->
+		</div> <!-- .letter-text-wrapper -->
+	</div> <!-- .row -->
 
-<div>{% include_tmpl form.about_text %}</div>
-
-{% endautoescape %}
-
-{% include "./progress_meter.html" %}
-</div>
-
+		<div class="show-for-small mobile-letter">
+		<div class="row">
+			<div class="small-12 columns page-ask">
+				{% autoescape off %}
+					{% include_tmpl form.about_text %}
+				{% endautoescape %}
+			</div> <!-- .page-ask -->
+		</div> <!-- .row -->
+	</div> <!-- .desktop-letter -->
 </form>
 
+<!-- @END Development Template/letter.html -->
 {% endblock %}
