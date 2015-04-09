@@ -27,14 +27,11 @@
 
 	{% if page.custom_fields.meta_description %}
 		<meta property="og:description" content="{{ page.custom_fields.meta_description }}"/>
+		<meta name="description" content="{{ page.custom_fields.meta_description }}" />
 	{% endif %}
 
 	<meta name="title" content="{% client_name %} | {{ page.title }}" />
 	<meta property="twitter:account_id" content="14811485" />
-
-	{% if page.custom_fields.meta_description %}
-		<meta name="description" content="{{ page.custom_fields.meta_description }}" />
-	{% endif %}  
 
 {% comment %}
 	/*

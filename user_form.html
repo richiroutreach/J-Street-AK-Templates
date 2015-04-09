@@ -36,7 +36,7 @@
 				{% case 'state' %} 
 					{% include "./state_select.html" %}
 				{% else %}
-					<input name="{{ field.field_name }}" id="id_{{ field.field_name }}" type="text" placeholder="{{ field.label_text }}">
+					<input name="{{ field.field_name }}" id="id_{{ field.field_name }}" type="text" placeholder="{{ field.label_text }}{% if field.field_name|is_in:context.required %}*{% endif %}">
 					{% comment %}
 						{{ field.input_tag }}
 					{% endcomment %}

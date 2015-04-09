@@ -302,8 +302,6 @@
 			Show / Hide the contributing member drop down
 		*/
 		$( 'input[name="user_contributing_member"]' ).change( function() {
-			console.log( 'Value: ' + $( 'input[name="user_contributing_member"]' ).val() );			
-
 			if( $( this ).is( ':checked' ) && $( this ).data( 'value' ) == 'yes' ) {
 				$( '#jstreet-chapters' ).fadeIn( 300 );
 				$( '#action_contributing_member_field' ).val( '1' );
@@ -392,7 +390,7 @@
 
 	<div class="row ak-error-wrapper">
 		<div class="large 12 columns">
-			<ul id="ak-errors"></ul>
+			<ul id="ak-errors" class="hidden"></ul>
 		</div>
 	</div> <!-- .ak-error-wrapper -->
 
@@ -406,9 +404,9 @@
 				{% if not has_products %}
 					{% if allow_monthly %}
 						<div class="row">
-							<div id="type" class="ak-clear large-12 columns">
+							<div id="type" class="ak-clear ak-err-below large-12 columns">
 								<label for="donation_type" class="uppercase">Choose frequency of donation</label>
-								<span><input type="radio" name="donation_type" id="id_donation_type_single" value="single"><label for="id_donation_type_single"> One-Time Donation<label></span>
+								<span><input type="radio" name="donation_type" id="id_donation_type_single" value="single" checked><label for="id_donation_type_single"> One-Time Donation<label></span>
 								<span><input type="radio" name="donation_type" id="id_donation_type_recurring" value="recurring"><label for="id_donation_type_recurring"> Monthly Donation</label></span>
 							</div>
 						</div> <!-- .row -->
@@ -437,7 +435,7 @@
 										</span>
 									</div>
 
-									<input id="action_contributing_member_field" type="hidden" name="action_contributing_member" value="1" />
+									<input id="action_contributing_member_field" type="hidden" name="action_contributing_member" value="0" />
 								</div>
 							</div>
 
@@ -456,12 +454,12 @@
 						<div id="amount_list" class="row ak-err-above">
 							{% for amount in amounts %}
 								{% ifequal amount "other" %}
-									<div id="other_amount_container" class="large-2 columns">
+									<div id="other_amount_container" class="large-2 medium-4 small-6 columns">
 										<noscript><input type="radio" value="" class="amount_radio_button" name="amount"></noscript>
 										<label for="amount_other_field" class="ak-btn"><span class="currency_sym">{{ page.currency_sym }}</span> <input type="text" id="amount_other_field" name="amount_other" size="3" onKeypress="clear_radio_buttons();" onClick="update_total()" onBlur="update_total()" onChange="update_total()"></label>
 									</div>
 								{% else %}
-									<div class="large-2 columns">
+									<div class="large-2 small-3 columns">
 										<label for="id_amount_{{amount}}" class="ak-btn"><span class="currency_sym"></span><input type="radio" id="id_amount_{{amount}}" value="{{ amount }}" class="amount_radio_button" name="amount" onClick="clear_other(); update_total()"  onBlur="update_total()" onChange="update_total()" {% if not args.amount_other and amount == default_amount %}checked{% endif %}>{{ page.currency_sym }}{{ amount|commify }}</label>
 									</div>
 								{% endifequal %}
@@ -505,12 +503,14 @@
 						<div class="row ak-labels-overlaid ak-errs-below">
 							<div class="large-4 medium-6 columns">
 								<label for="first_name">First Name</label>
-								<input id="first_name" type="text" name="first_name" />
+								<input id="first_name" type="text" name="first_name" class="" />
+								<input type="hidden" name="required" value="first_name"/>
 							</div>
 							
 							<div class="large-4 medium-6 columns">
 								<label for="last_name">Last Name</label>
-								<input id="last_name" type="text" name="last_name" />
+								<input id="last_name" type="text" name="last_name" class="" />
+								<input type="hidden" name="required" value="last_name"/>
 							</div>
 
 							<div class="large-4 medium-6 columns">
@@ -668,11 +668,26 @@
 			});
 		});
 
+		function actionkitValidationErrors(errors, field) {
+			console.log( errors );
+
+			if( field ) return;
+/*
+			for( var name in errors ) {
+				errors[name] = '<i class="fa fa-exclamation-triangle"></i>' + errors[name];
+			}
+*/
+			// Remove name from the list of errors
+			delete errors['name:missing'];
+
+			// Return that we had an error
+			return;
+		}
+
 		/*
 			Check to make sure that if the user select contributing member, that they are giving enough to qualify
 		*/
 		function actionkitBeforeSubmit() {
-			console.log('before submit');
 			var anual_min_contribution = 36;
 			var min_contribution = $('#id_donation_type_recurring').is(':checked')? anual_min_contribution/12 : 36;
 			var other_amount = $('input[name="amount_other"]').val().replace(/\D/g, '');

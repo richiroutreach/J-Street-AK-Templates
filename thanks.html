@@ -103,7 +103,30 @@
 									</div>
 
 									<div class="small-8 medium-10 large-9 columns text">							
-										<h4>Share on Facebook:</h4>
+										<div class="row facebook-share">
+											<div class="large-12 columns">
+												<div class="fb-share-text">
+													<div class="clearfix">
+														<div class="fb-share-image">
+															<img src="{{ page.custom_fields.meta_image|default:"https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg" }}">
+														</div>
+
+														<h3>{{ page.title }} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</h3>
+													</div>
+
+													<div class="clearfix">
+														{% if page.custom_fields.meta_description %}
+															{{ page.custom_fields.meta_description }}
+														{% else %}
+															{% filter striptags %}
+																{% include_tmpl form.about_text %}
+															{% endfilter %}
+														{% endif %}
+													</div>
+												</div> <!-- .fb-share-text -->
+											</div> <!-- .fb-share-text -->
+										</div> <!-- .row -->
+
 										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
@@ -164,7 +187,13 @@
 					{% endcomment %}
 
 					{% filter ak_text:"notaf_thanks_banner" %}
-						<h2 class="ak-header">Thank you!</h2>
+						<h2 class="ak-header">
+							{% if page.custom_fields.thanks_title %}
+								{{ page.custom_fields.thanks_title }}
+							{% else %}
+								Thank you!
+							{% endif %}
+						</h2>
 						
 						<div class="ak-blurb">
 							{% include_tmpl form.thank_you_text %}
@@ -182,7 +211,30 @@
 									</div>
 
 									<div class="small-8 medium-10 large-9 columns text">							
-										<h4>Share on Facebook:</h4>
+										<div class="row facebook-share">
+											<div class="large-12 columns">
+												<div class="fb-share-text">
+													<div class="clearfix">
+														<div class="fb-share-image">
+															<img src="{{ page.custom_fields.meta_image|default:"https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg" }}">
+														</div>
+
+														<h3>{{ page.title }} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</h3>
+													</div>
+
+													<div class="clearfix">
+														{% if page.custom_fields.meta_description %}
+															{{ page.custom_fields.meta_description }}
+														{% else %}
+															{% filter striptags %}
+																{% include_tmpl form.about_text %}
+															{% endfilter %}
+														{% endif %}
+													</div>
+												</div> <!-- .fb-share-text -->
+											</div> <!-- .fb-share-text -->
+										</div> <!-- .row -->
+
 										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->

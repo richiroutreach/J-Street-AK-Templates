@@ -11,6 +11,14 @@
 		}
 	}
 
+	#type {
+		span {
+			@media #{$small-only} {
+				display: block;
+			}
+		}
+	}
+
 	#amount_list {
 		label {
 			line-height: 37px;
@@ -30,6 +38,10 @@
 	#amount_other_field {
 		width: 75%;
 		float: right;
+
+		@media #{$small-only} {
+			width: 85%;
+		}
 	}
 
 	#jstreet-chapters {

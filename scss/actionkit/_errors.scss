@@ -11,13 +11,35 @@
 }
 
 #act {
-	label {
+	label, select {
 		&.ak-error {
 			color: $errorColor;
 		}
 	}
 
 	.ak-err {
-		display: none !important;
+		margin: 0;
+		padding-left: 0.5rem;
+		list-style-type: none;
+
+
+		li {
+			display: inline-block;
+		
+			&:before {
+				margin-right: 0.5rem;
+				display: inline-block;
+				font: normal normal normal 14px/1 FontAwesome;
+				font-size: inherit;
+				text-rendering: auto;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				content: "\f071";
+			}
+		}
+
+		@media #{$small-only} {
+			margin-bottom: 1rem;
+		}
 	}
 }

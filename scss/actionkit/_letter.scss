@@ -1,0 +1,27 @@
+/*
+	---------------------------------------------------------------------------
+		Letter Specific Styles
+	---------------------------------------------------------------------------
+*/
+
+.letter-text {
+	background: rgba($ask-bg, 0.25);
+	padding: 1rem;
+
+	h3 {
+		text-transform: uppercase;
+	}
+
+	.lead-in {
+		color: $info-color;
+		text-transform: uppercase;
+		
+		p {
+			font-weight: bold;
+		}
+	}
+
+	@media #{$small-only} {
+		margin-bottom: 3rem
+	}
+}
