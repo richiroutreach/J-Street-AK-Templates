@@ -182,12 +182,19 @@ ul.ak-err {
 
 /*
 	---------------------------------------------------------------------------
-		login page links
+		login page
 	---------------------------------------------------------------------------
 */
 
 .forgot_link, .never_link {
-	&:hover, &:active {
-		color: lighten($alert-button-color, 5);
+	font-size: 0.7rem; //12 point font
+	background-color: $orangered;
+
+	&:hover {
+		background-color: darken($orangered, 10);
 	}
+}
+
+.login-page h2 {
+	text-transform: capitalize;
 }
