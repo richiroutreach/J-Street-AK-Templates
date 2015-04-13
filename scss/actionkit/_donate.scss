@@ -21,7 +21,7 @@
 
 	#amount_list {
 		label {
-			line-height: 37px;
+			line-height: 41px;
 		}
 
 		input {
@@ -35,19 +35,30 @@
 		}
 	}
 
-	#amount_other_field {
-		width: 75%;
-		float: right;
+	#other_amount_container {
+		float: left;
 
-		@media #{$small-only} {
-			width: 85%;
+		label {
+			position: absolute;
+			top: 0px;
+			left: 1rem;
+			z-index: 99;
+			color: #666;
 		}
+
+		input {
+			padding-left: 1.25rem;
+		}	
 	}
 
 	#jstreet-chapters {
 		label {
 			margin-bottom: 0;
 		}
+	}
+
+	#id_action_iho_recipient_notification_message {
+		height: 5rem;
 	}
 }
 
