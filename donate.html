@@ -292,6 +292,37 @@
 			$( '#contributing_member_yes' ).prop( 'checked', true );
 			$( '#jstreet-chapters' ).fadeIn( 300 );
 		}
+
+		if ( getURLParameter( 'action_inhonorof' ) == 'in_honor' || getURLParameter( 'action_inhonorof' ) == 'in_memoriam' ) {
+			$( '#in_honor_of_options' ).val( getURLParameter( 'action_inhonorof' ) );
+
+			$( '#notification_options').show();
+
+			// Make sure the two step boxes are the same height
+			$.fn.matchHeight._update();
+		}
+
+		var notification_type = getURLParameter( 'action_iho_notification_type');
+
+		if ( notification_type == 'email' || notification_type == 'mail' || notification_type == 'na' ) {
+			// AK messes these up
+			$( '#not_type_na' ).val( 'na' );
+			$( '#not_type_email' ).val( 'email' );
+			$( '#not_type_mail' ).val( 'mail' );
+
+			$( 'input[name="action_iho_notification_type"][value="' + notification_type + '"]' ).click();
+
+//			$( '#notification-fields' ).show();
+
+			// Make sure the two step boxes are the same height
+//			$.fn.matchHeight._update();
+		}
+
+		if ( getURLParameter( 'action_iho_recipient_notification_message' ) != null ) {
+			$( 'label[for="id_action_iho_recipient_notification_message"]' ).addClass( 'has-content' );
+			$( 'textarea[name="action_iho_recipient_notification_message"]').val( getURLParameter( 'action_iho_recipient_notification_message' ) );
+		}
+
 	}, 500);
 
 	$( document ).ready( function() {
@@ -493,15 +524,15 @@
 
 								<div class="row">
 									<div class="large-5 columns">
-										<label><input type="radio" name="action_iho_notification_type" value="0"  checked> No notification necessary</label>
+										<label><input id="not_type_na" type="radio" name="action_iho_notification_type" value="na" checked> No notification necessary</label>
 									</div>
 
 									<div class="large-4 columns">
-										<label><input type="radio" name="action_iho_notification_type" value="email" > Email (be green!)</label>
+										<label><input id="not_type_email"  type="radio" name="action_iho_notification_type" value="email" > Email (be green!)</label>
 									</div>
 
 									<div class="large-3 columns">
-										<label><input type="radio" name="action_iho_notification_type" value="mail" > Letter</label>
+										<label><input id="not_type_mail"  type="radio" name="action_iho_notification_type" value="mail" > Letter</label>
 									</div>
 								</div> <!-- .row -->
 

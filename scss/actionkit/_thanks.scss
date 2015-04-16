@@ -107,12 +107,15 @@
 		padding-bottom: 1rem;
 
 		.fb-share-image {
-			width: 20%;
-			float: left;
 			margin-bottom: 0.25rem;
 
 			img {
 				border: 1px solid $primary-color;
+			}
+
+			@media #{$medium-up} {
+				width: 20%;
+				float: left;
 			}
 		}
 		

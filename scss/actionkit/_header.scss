@@ -54,11 +54,31 @@
 		margin-bottom: 0;
 
 		.logo {
-			width: 100%;
+			margin-top: 10px;
 		}
 
 		.socmed {
-			display: none;
+			li {
+				a {
+					margin-right: 0.75rem;			
+				}
+
+				&:last-child {
+					a {
+						margin-right: 0;
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 368px) {
+		.socmed {
+			li {
+				a {
+					margin-right: 0;
+				}
+			}
 		}
 	}
 }

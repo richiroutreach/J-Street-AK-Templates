@@ -147,7 +147,7 @@
 											{% endif %}
 										</div> <!-- .tweet-text -->
 
-										<a href="http://twitter.com/intent/tweet?text={{ page.custom_fields.twitter_msg|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
+										<a href="http://twitter.com/intent/tweet?text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -255,7 +255,7 @@
 											{% endif %}
 										</div> <!-- .tweet-text -->
 
-										<a href="http://twitter.com/intent/tweet?text={{ page.custom_fields.twitter_text|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
+										<a href="http://twitter.com/intent/tweet?text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
