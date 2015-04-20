@@ -415,6 +415,12 @@
 
 	<div class="row hide-for-small desktop-ask">
 		<div class="large-12 columns page-ask">
+			{% if page.custom_fields.image %}
+				<div class="custom-image">
+					<img src="{{ page.custom_fields.image }}" />
+				</div> <!-- .custom-image -->
+			{% endif %}
+		
 			{% include_tmpl form.ask_text %}
 		</div> <!-- .page-ask -->
 	</div> <!-- .desktop-petition -->
@@ -499,6 +505,95 @@
 						</div> <!-- #amount_list -->
 					</div> <!-- .amounts -->
 				</div> <!-- .row -->
+
+				{% if has_products %}
+					<div class="row">
+						<div class="large-12 columns">
+							<label id="products-label" class="ak-label-above">Product{% if products|length > 1 %}s{% endif %}</label>
+							
+							<table>
+								<tr id="product-table-headers">
+									<th id="product-quantity-header">Quantity</th>
+									<th id="product-details-header">Product</th>
+									<th id="product-amount-header">Price</th>
+								</tr>
+
+								{% for product in products %}
+									<tr>
+										<td class="product-quantity">
+											{% ifequal product.max 1 %}
+												<input type="checkbox" value="1" name="product_{{ product.id }}" id="product_{{ product.id }}" class="ak_product_inputs" onBlur="update_total()" onChange="update_total()">
+											{% else %}
+												<input type="text" name="product_{{ product.id }}" id="product_{{ product.id }}" size="2" class="ak_product_inputs" onBlur="update_total()" onChange="update_total()">
+											{% endifequal %}
+										</td>
+
+										<td class="product-details">
+											<div class="product-name">{{ product.name }}</div>
+											{% if product.desc %}<div class="product-description">{{ product.desc }}</div>{% endif %}
+										</td>
+
+										<td class="product-amount">
+											<span id="product_{{ product.id }}_price" data-price="{{ product.price }}">{% ifequal product.price 0 %}FREE!{% else %}{{ page.currency_sym }} {{ product.price|commify }}{% endifequal %}</span>
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div> <!-- .row -->
+				{% endif %}
+
+				{% if has_candidates %}
+					<div class="row">
+						<div class="large-12 columns">
+							<label id="candidates-label" class="ak-label-above" for="amount">Candidate{% if candidates|length > 1 %}s{% endif %}</label>
+
+							<table id="candidates">
+								<tr>
+									<th id="candidate-details-header">Candidate</th>
+									<th class="candidate-amount-header">Donation</th>
+								</tr>
+								
+								{% for candidate in candidates %}
+									<tr>
+										<td class="candidate-details">
+											{% if candidate.portrait_url %}
+												{% autoescape off %}
+													<img class="candidate-portrait" src="{{ candidate.portrait_url }}">
+												{% endautoescape %}
+											{% endif %}
+
+											<div class="candidate-name">{{ candidate.name }}</div>
+											
+											{% autoescape off %}
+												{{ candidate.desc }}
+											{% endautoescape %}
+										</td>
+
+										<td>
+											<div class="candidate-amount">
+												<label>{{ page.currency_sym }}</label>
+												<input type="text" name="candidate_{{ candidate.id }}" id="candidate_{{ candidate.id }}" size="2" class="ak_candidate_inputs" onBlur="update_total()" onChange="update_total()">
+											</div>
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div> <!-- .row -->
+				{% endif %}
+
+				{% if has_candidates or has_products %}
+					<div id="total_div"></div>
+					
+					<script type="text/ak-template" for="total_div">
+						[% if (has_products || has_candidates) { %]
+							<p class="donation-total ak-clear"><label for="amount">Total Amount: <span id="total"></span></label>
+						[% } 
+							setTimeout(update_total, 0);
+						%]
+					</script>
+				{% endif %}
 
 				<div class="row">
 					<div class="memory-of large-12 columns">
@@ -700,6 +795,94 @@
 						</div> <!-- .row -->		
 					</div> <!-- .large-12 -->
 				</div> <!-- .billing-info -->
+
+				{% if page.has_candidates %}
+					<div class="row ak-errs-below">
+						<div class="large-12 columns">
+							For political donations, we're required to ask for your <strong>employer</strong> and <strong>occupation</strong>:
+
+							<div class="row">
+								<div class="large-6 columns ak-labels-overlaid">
+									<label for="action_employer">Employer</label>
+									<input id="action_employer"  type="text" name="action_employer" size="20"/>
+									<input type="hidden" name="required" value="action_employer"/>
+								</div>
+
+								<div class="large-6 columns ak-labels-overlaid">
+									<label for="action_occupation">Occupation</label>
+									<input id="action_occupation"  type="text" name="action_occupation" size="20"/>
+									<input type="hidden" name="required" value="action_occupation"/>
+								</div>
+							</div> <!-- .row -->
+						</div> <!-- .large-12 -->
+					</div> <!-- .row -->
+				{% endif %}
+
+				{% if has_shippable_products %}
+					<div class="row shipping-info">
+						<div class="large-12 columns ak-errs-below">
+							<label class="ak-label-above">Shipping Address</label>
+			
+							{% with "shipping_" as input_name_prefix %}
+								<div>
+									<input id="shipping_same" type="checkbox" name="shipping_same" value="1" onchange="toggle_shipping(this)"/> <label for="shipping_same">Ship to billing address</label>
+								</div>
+
+								<div class="row ak-errs-below">
+									<div class="large-4 medium-6 columns ak-labels-overlaid">
+										<label for="shipping_address1">Shipping address</label>
+										<input id="shipping_address1" type="text" name="shipping_address1" />
+									</div>
+
+									<div class="large-4 medium-6 columns ak-labels-overlaid">
+										<label for="shipping_city">Shipping city</label>
+										<input id="shipping_city" type="text" name="shipping_city" />
+									</div>
+
+									{% if page.allow_international %}
+										<div id="us_shipping_fields">
+											<div class="large-2 medium-3 columns">
+												{% include "./state_select.html" %}
+											</div>
+
+											<div class="large-2 medium-3 columns ak-labels-overlaid">
+												<label for="shipping_zip">Shipping ZIP</label>
+												<input id="shipping_zip"  type="text" name="shipping_zip" maxlength="5" size="5"/>
+											</div>
+										</div> <!-- #us_shipping_fields -->
+
+										<div id="intl_shipping_fields">
+											<div class="large-2 medium-3 columns ak-labels-overlaid">
+												<label for="shipping_region">Shipping region</label>
+												<input id="shipping_region"  type="text" name="shipping_region" size="20"/>
+											</div>
+
+											<div class="large-2 medium-3 columns ak-labels-overlaid">
+												<label for="shipping_postal">Shipping postal Code</label>
+												<input id="shipping_postal"  type="text" name="shipping_postal" size="10"/>
+											</div>
+										</div> <!-- #intl_shipping_fields -->
+
+										<div class="large-12 columns">
+											<label for="shipping_country">Shipping country</label>{% with 'shipping_country_change()' as onchange %}{% include "./country_select.html" %}{% endwith %}
+										</div>
+
+										<script language="javascript">shipping_country_change();</script>
+									{% else %}
+										<div class="large-2 medium-3 columns">
+											{% include "./state_select.html" %}
+										</div>
+
+										<div class="large-2 medium-3 columns ak-labels-overlaid">
+											<label for="shipping_zip">Shipping ZIP</label>
+											<input id="shipping_zip"  type="text" name="shipping_zip" maxlength="5" size="5"/>
+										</div>
+									{% endif %}
+								</div> <!-- .row -->
+							{% endwith %}
+						</div> <!-- .large-12 -->
+					</div> <!-- .shipping-info -->
+				{% endif %}
 
 				<div class="row cc-info">
 					<div class="large-12 columns">

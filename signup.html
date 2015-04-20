@@ -20,6 +20,12 @@
 		<div class="row">
 			<div id="signup-story" class="hide-for-small desktop-signup">
 				<div class="large-8 medium-6 columns page-ask">
+					{% if page.custom_fields.image %}
+						<div class="custom-image">
+							<img src="{{ page.custom_fields.image }}" />
+						</div> <!-- .custom-image -->
+					{% endif %}
+
 					{% autoescape off %}
 						{% include_tmpl form.introduction_text %}
 					{% endautoescape %}

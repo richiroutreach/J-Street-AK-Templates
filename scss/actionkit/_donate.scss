@@ -87,3 +87,37 @@
 		top: 5px;
 	}
 }
+
+#candidates {
+	.candidate-details {
+		.candidate-portrait {
+			float: left;
+			margin-right: 0.5rem;
+			margin-bottom: 0.5rem;
+			max-width: 50%;
+		}
+
+		.candidate-name {
+			color: $secondary-color;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-bottom: 0.5rem;
+		}
+	}
+
+	.candidate-amount {
+		position: relative;
+
+		label {
+			position: absolute;
+			top: 9px;
+			left: 0.5rem;
+			z-index: 99;
+			color: #666;
+		}
+
+		input {
+			padding-left: 1.25rem;			
+		}
+	}
+}

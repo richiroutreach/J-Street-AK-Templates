@@ -30,6 +30,12 @@
 						</h2>
 						
 						<div class="ak-blurb">
+							{% if page.custom_fields.image %}
+								<div class="custom-image">
+									<img src="{{ page.custom_fields.image }}" />
+								</div> <!-- .custom-image -->
+							{% endif %}
+
 							{% include_tmpl form.thank_you_text %}
 						</div>
 					{% endfilter %}
@@ -196,6 +202,12 @@
 						</h2>
 						
 						<div class="ak-blurb">
+							{% if page.custom_fields.image %}
+								<div class="custom-image">
+									<img src="{{ page.custom_fields.image }}" />
+								</div> <!-- .custom-image -->
+							{% endif %}
+													
 							{% include_tmpl form.thank_you_text %}
 						</div>
 					{% endfilter %}

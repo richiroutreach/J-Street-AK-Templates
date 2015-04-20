@@ -20,6 +20,12 @@
 	<div class="hide-for-small desktop-petition">
 		<div class="row">
 			<div class="large-12 columns page-ask">
+				{% if page.custom_fields.image %}
+					<div class="custom-image">
+						<img src="{{ page.custom_fields.image }}" />
+					</div> <!-- .custom-image -->
+				{% endif %}
+
 				{% autoescape off %}
 					{% include_tmpl form.about_text %}
 				{% endautoescape %}
