@@ -29,14 +29,16 @@
 							{% endif %}
 						</h2>
 						
-						<div class="ak-blurb">
-							{% if page.custom_fields.image %}
-								<div class="custom-image">
-									<img src="{{ page.custom_fields.image }}" />
-								</div> <!-- .custom-image -->
-							{% endif %}
+						<div class="row ak-blurb">
+							<div class="large-12 columns">
+								{% if page.custom_fields.image %}
+									<div class="custom-image">
+										<img src="{{ page.custom_fields.image }}" />
+									</div> <!-- .custom-image -->
+								{% endif %}
 
-							{% include_tmpl form.thank_you_text %}
+								{% include_tmpl form.thank_you_text %}
+							</div>
 						</div>
 					{% endfilter %}
 				</div><!-- .thank-you-text -->
@@ -77,7 +79,7 @@
 											<label for="#id_taf_body">Message:</label>
 
 											<div id="id_taf_body" name="taf_body" class="ak-sharebox-tafbody">
-												{% filter referring_akid:akid|tag_links:"source=taf" %}
+												{% filter referring_akid:akid|tag_links:"source=tafemail" %}
 													<div class="taf-body">{% include_tmpl page.followup.taf_body escaped %}</div> <!-- .taf-body -->
 												{% endfilter %}
 											</div>
@@ -133,7 +135,7 @@
 											</div> <!-- .fb-share-text -->
 										</div> <!-- .row -->
 
-										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
+										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}?data={{ user.id }}-facebook" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -153,7 +155,7 @@
 											{% endif %}
 										</div> <!-- .tweet-text -->
 
-										<a href="http://twitter.com/intent/tweet?text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
+										<a href="http://twitter.com/intent/tweet?data={{ user.id }}-twitter&text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -247,7 +249,7 @@
 											</div> <!-- .fb-share-text -->
 										</div> <!-- .row -->
 
-										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
+										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}?data={{ user.id }}-facebook" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -267,7 +269,7 @@
 											{% endif %}
 										</div> <!-- .tweet-text -->
 
-										<a href="http://twitter.com/intent/tweet?text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
+										<a href="http://twitter.com/intent/tweet?data={{ user.id }}-twitter&text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
