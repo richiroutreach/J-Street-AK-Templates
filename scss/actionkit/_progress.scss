@@ -1,0 +1,32 @@
+/*
+	---------------------------------------------------------------------------
+		Progress Meter
+	---------------------------------------------------------------------------
+*/
+
+#progress {
+	text-align: center;
+
+	.progress-holder {
+		border: 2px solid $primary-color;
+		position: relative;
+		height: 2.5rem;
+	}
+
+	.progress-bar {
+		background-color: $info-color;
+		position: absolute;
+		height: 36px;
+	}
+
+	.progress-percent {
+		position: relative;
+		font-size: 23px;
+		color: $primary-color;
+	}
+
+	.progress-caption {
+		margin-top: 0.5rem;
+		font-size: 1.25rem;
+	}
+}

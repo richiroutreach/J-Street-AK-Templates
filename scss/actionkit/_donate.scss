@@ -60,6 +60,15 @@
 	#id_action_iho_recipient_notification_message {
 		height: 5rem;
 	}
+
+	.uppercase {
+		#total {
+			display: inline-block;
+			font-weight: bold;
+			font-size: 0.875rem;
+			color: $alert-button-color;
+		}
+	}
 }
 
 .step-wrapper {

@@ -118,3 +118,19 @@
 #id_comment {
 	height: 200px;
 }
+
+#id_c4_member_box {
+	label {
+		display: block;
+		font-size: 1rem;
+		pointer-events: all !important;
+		position: relative;
+		font-weight: bold;
+		cursor: pointer !important;
+		color: #4d4d4d;
+	}
+
+	input {
+		margin-right: 0.5rem;
+	}
+}

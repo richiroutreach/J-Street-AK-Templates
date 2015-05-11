@@ -4,12 +4,14 @@ $primary-color: #191b27;
 //$primary-color: #28c4d8;
 //$secondary-color: #dcffff;
 $secondary-color: #28c4d8;
-$info-color: #1cacac;
+//$info-color: #1cacac;
+$info-color: #28c4d8;
 
 $alert-button-color: #fd3600;
 
 //$ask-bg: #dcffff;
-$ask-bg: #28c4d8;
+//$ask-bg: #28c4d8;
+$ask-bg: $info-color;
 
 $body-font-family: 'Montserrat', sans-serif;
 
@@ -36,6 +38,7 @@ $black: #000000;
 @import "actionkit/survey";
 @import "actionkit/letter";
 @import "actionkit/errors";
+@import "actionkit/progress";
 
 // Or selectively include components
 // @import
