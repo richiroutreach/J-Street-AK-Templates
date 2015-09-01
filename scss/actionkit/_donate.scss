@@ -69,7 +69,26 @@
 			color: $alert-button-color;
 		}
 	}
+
+	.product-amount {
+		white-space: nowrap;
+	}
+
+	.donate-mobile-ask {
+		margin-top: 3rem;
+
+		img {
+			float: none !important;
+			margin: 0 0 1rem 0 !important;
+		}
+
+		.custom-image {
+			float: none;
+			text-align: center;
+		}
+	}
 }
+
 
 .step-wrapper {
 	background: rgba(white, 0.95);
