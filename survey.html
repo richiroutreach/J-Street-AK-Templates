@@ -41,7 +41,7 @@
 			{% include "./inline_tellafriend.html" %}
 
 			<div class="form-submit">
-				<button type="submit" class="large alert button">Submit Survey</button>
+				<button type="submit" class="large alert button">{% if page.custom_fields.submit_button_text %}{{ page.custom_fields.submit_button_text }}{% else %}Submit Survey{% endif %}</button>
 
 				<input type="hidden" name="page" value="{{ page.name }}">
 				<input type="hidden" name="required" value="country">

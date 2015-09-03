@@ -326,6 +326,8 @@
 	}, 500);
 
 	$( document ).ready( function() {
+{% comment %}
+
 		// Contributing Member Functions
 		$('input[name="user_contributing_member"]').trigger('change');
 
@@ -342,9 +344,18 @@
 				$( '#action_contributing_member_field' ).val( '0' );
 			}
 		});
-
+{% endcomment %}
 		// Make sure the two step boxes are the same height
 		$( '.step-wrapper' ).matchHeight();
+
+		{% if not has_candidates and not has_products %}
+			$( '#id_c4_member' ).change( function() {
+				if( !$(this).is('checked') ) {
+					$( '#recurring-ask' ).show();
+					$( '#donateModal' ).foundation( 'reveal', 'open' );	
+				}
+			});
+		{% endif %}
 	});
 
 	/*
@@ -454,39 +465,53 @@
 				{% endif %}
 
 				<div class="row">
-					<div class="contributing-member large-12 columns">
-						<label for="user_contributing_member" class="uppercase">Would You Like to Become a Contributing Member of J Street?<span><em>(Optional -</em> <strong>Requires minimum one-time gift of $36 or monthly gift of $10)</strong></span></label>
-
-						<div class="row">
-							<div class="large-3 columns">
-								<div class="row">
-									<div class="large-12 columns">
-										<span class="contributing_member_box">
-											<input type="radio" name="user_contributing_member" id="contributing_member_yes" data-value="yes"><label for="contributing_member_yes">Yes</label>
-										</span>
-									</div>
-
-									<div class="large-12 columns">
-										<span class="contributing_member_box">
-											<input type="radio" name="user_contributing_member" id="contributing_member_no" data-value="no"><label for="contributing_member_no">No</label>
-										</span>
-									</div>
-
-									<input id="action_contributing_member_field" type="hidden" name="action_contributing_member" value="0" />
-								</div>
+					<div class="large-12 columns">
+						{% if not page.custom_fields.disable_c4_member %}
+							<div id="id_c4_member_box" class="c4-member">
+								<label for="id_c4_member">
+									<input id="id_c4_member" type="checkbox" name="user_c4_member" value="1" checked="checked">I want to stand up and be counted as a J Street Member
+								</label>
 							</div>
+						{% endif %}
+					</div>
+				</div>
 
-							<div id="jstreet-chapters" class="large-9 columns hidden">
-								<label>Do you want to join through a J Street chapter?</label>
-								{{page.custom_fields.member_chapters_select|safe}}
-							</div> <!-- #jstreet-chapters -->
-						</div> <!-- .row -->
-					</div> <!-- .contributing-member -->
-				</div> <!-- .row -->
+				{% comment %}
+					<div class="row">
+						<div class="contributing-member large-12 columns">
+							<label for="user_contributing_member" class="uppercase">Would You Like to Become a Contributing Member of J Street?<span><em>(Optional -</em> <strong>Requires minimum one-time gift of $36 or monthly gift of $10)</strong></span></label>
+
+							<div class="row">
+								<div class="large-3 columns">
+									<div class="row">
+										<div class="large-12 columns">
+											<span class="contributing_member_box">
+												<input type="radio" name="user_contributing_member" id="contributing_member_yes" data-value="yes"><label for="contributing_member_yes">Yes</label>
+											</span>
+										</div>
+
+										<div class="large-12 columns">
+											<span class="contributing_member_box">
+												<input type="radio" name="user_contributing_member" id="contributing_member_no" data-value="no"><label for="contributing_member_no">No</label>
+											</span>
+										</div>
+
+										<input id="action_contributing_member_field" type="hidden" name="action_contributing_member" value="0" />
+									</div>
+								</div>
+
+								<div id="jstreet-chapters" class="large-9 columns hidden">
+									<label>Do you want to join through a J Street chapter?</label>
+									{{page.custom_fields.member_chapters_select|safe}}
+								</div> <!-- #jstreet-chapters -->
+							</div> <!-- .row -->
+						</div> <!-- .contributing-member -->
+					</div> <!-- .row -->
+				{% endcomment %}
 
 				<div class="row">
 					<div class="amounts large-12 columns">
-						<label for="amount">Choose Donation Amount</label>
+						<label for="amount" class="uppercase">Choose Donation Amount</label>
 						
 						<div id="amount_list" class="row ak-err-above">
 							{% for amount in amounts %}
@@ -509,22 +534,30 @@
 				{% if has_products %}
 					<div class="row">
 						<div class="large-12 columns">
-							<label id="products-label" class="ak-label-above">Product{% if products|length > 1 %}s{% endif %}</label>
+							<label id="products-label" class="ak-label-above uppercase">{% if page.custom_fields.event_tickets %}Ticket{% if products|length > 1 %}s{% endif %}{%else%}Product{% if products|length > 1 %}s{% endif %}{% endif %}</label>
 							
-							<table>
+							<table{% if page.custom_fields.event_tickets %} class="ticket-table"{% endif %}>
 								<tr id="product-table-headers">
-									<th id="product-quantity-header">Quantity</th>
+									<th id="product-quantity-header"{% if page.custom_fields.event_tickets %} colspan="2"{% endif %}>Quantity</th>
 									<th id="product-details-header">Product</th>
 									<th id="product-amount-header">Price</th>
 								</tr>
 
 								{% for product in products %}
 									<tr>
+										{% if page.custom_fields.event_tickets %}
+											<td>
+												<a class="ticket-add button small" data-product="{{ product.id }}" data-name="{{ product.name }}">
+													<i class="fa fa-2x fa-plus"></i>
+												</a>
+											</td>
+										{% endif %}
 										<td class="product-quantity">
+
 											{% ifequal product.max 1 %}
 												<input type="checkbox" value="1" name="product_{{ product.id }}" id="product_{{ product.id }}" class="ak_product_inputs" onBlur="update_total()" onChange="update_total()">
 											{% else %}
-												<input type="text" name="product_{{ product.id }}" id="product_{{ product.id }}" size="2" class="ak_product_inputs" onBlur="update_total()" onChange="update_total()">
+												<input type="text" name="product_{{ product.id }}" id="product_{{ product.id }}" size="2" class="ak_product_inputs" onBlur="update_total()" onChange="update_total()" data-product="{{ product.id }}" {% if page.custom_fields.event_tickets %}disabled{% endif %}>
 											{% endifequal %}
 										</td>
 
@@ -537,16 +570,102 @@
 											<span id="product_{{ product.id }}_price" data-price="{{ product.price }}">{% ifequal product.price 0 %}FREE!{% else %}{{ page.currency_sym }} {{ product.price|commify }}{% endifequal %}</span>
 										</td>
 									</tr>
+									
 								{% endfor %}
 							</table>
 						</div>
 					</div> <!-- .row -->
+
+					{% if page.custom_fields.event_tickets %}
+						<div id="guest-boxes"></div>
+
+						<script>
+							$( '.ticket-add' ).click( function() {
+								var id = $( this ).data( 'product' );
+								var product = $( this ).data( 'name' ); 
+								var guests = 0;
+
+								var value = parseInt( $( '#product_' + id ).val() ) || 0;
+
+								if( id == 9 ) {
+									guests = 11;
+								} else if( id == 10 || id == 11 ) {
+									guests = 9;
+								} else if( id == 12 ) {
+									guests = 1;
+								}
+
+								$( '#product_' + id ).val( value + 1 ).change();
+
+								createGuestlist( id, product, guests, value + 1);
+							});
+
+							$( 'body' ).on( 'click', '.ticket-remove', function() {
+								var id = $( this ).data( 'box' );
+								var product = $( this ).data( 'id' );
+								var value = parseInt( $( '#product_' + product ).val() ) || 0;
+
+								$( this ).prop( 'disabled', true );
+
+								$( '#' + id ).fadeOut( 300, function() {
+									$( '#' + id ).remove();
+
+									$.fn.matchHeight._update();
+								});
+
+								$( '#product_' + product ).val( value - 1 ).change();
+							});
+
+							function createGuestlist( product, name, guests, count ) {						
+								var html = '<div id="product-' + product +'-' + count + '" data-box="product-' + product +'-' + count + '" data-id="' + product + '" class="guest-box hidden large-12 columns"><fieldset><legend class="Uppercase">' + name +'</legend><div class="row"><div class="';
+
+								if( guests == 1) {
+									html += 'large-6';
+								} else {
+									html += 'large-12';
+								}
+
+								html += ' columns"><input type="text" name="' + product + '-' + count + '-primary-name" placeholder="Primary Name" /></div>';
+
+								if( guests > 1 ) {
+									html +='</div><div class="row"><div class="large-12 columns"><label>Table Guest List</label></div></div>';
+								}
+
+								for( var i = 0; i < guests; i++ ) {
+									if( i % 2 == 0 && guests != 1) {
+										html += '<div class="row">';
+									}
+
+									html += '<div class="large-6 columns';
+
+									if( i == ( guests - 1) && guests > 1 ) {
+										html +=' large-centered';
+									} 
+
+									html +='"><input type="text" name="' + product + '-' + count + '-guest-' + ( i + 1 ) + '-name" placeholder="Guest Name" /></div>';
+								
+									if( i % 2 == 1 && guests != 1) {
+										html += '</div>';
+									}
+								}
+
+								html += '<a class="ticket-remove button small" data-box="product-' + product +'-' + count + '" data-id="' + product + '" >Remove Ticket</a></fieldset></div>';
+
+								$( '#guest-boxes' ).append( html );
+
+								$( '#product-' + product + '-' + count ).fadeIn( 300);
+
+								$.fn.matchHeight._update();
+							}
+
+						</script>
+					{% endif %}
 				{% endif %}
 
 				{% if has_candidates %}
 					<div class="row">
 						<div class="large-12 columns">
-							<label id="candidates-label" class="ak-label-above" for="amount">Candidate{% if candidates|length > 1 %}s{% endif %}</label>
+							<label id="candidates-label" class="ak-label-above uppercase" for="amount">Candidate{% if candidates|length > 1 %}s{% endif %}</label>
 
 							<table id="candidates">
 								<tr>
@@ -588,157 +707,165 @@
 					
 					<script type="text/ak-template" for="total_div">
 						[% if (has_products || has_candidates) { %]
-							<p class="donation-total ak-clear"><label for="amount">Total Amount: <span id="total"></span></label>
+							<p class="donation-total ak-clear"><label for="amount" class="uppercase">Total Amount: <span id="total"></span></label>
 						[% } 
 							setTimeout(update_total, 0);
 						%]
 					</script>
 				{% endif %}
 
-				<div class="row">
-					<div class="memory-of large-12 columns">
-						<label class="uppercase">Is This Donation in Honor or Memory of Someone?<span><em>(Optional - But for a notification to be sent you must include recipient's mailing address)</em></span></label>
+				{% if page.custom_fields.event_tickets %} 
 
-						<div class="row">					
-							<div class="large-5 columns">
-								<select id="in_honor_of_options" type="text" name="action_inhonorof">
-									<option value="">Choose one</option>
-									<option value="in_honor">In Honor Of:</option>
-									<option value="in_memoriam">In Memoriam:</option>
-								</select>
-							</div>
+				{% else %}
+					<div class="row">
+						<div class="memory-of large-12 columns">
+							<label class="uppercase">Is This Donation in Honor or Memory of Someone?<span><em>(Optional - But for a notification to be sent you must include recipient's mailing address)</em></span></label>
 
-							<div class="large-7 columns">
-								<input id="honor_name" type="text" name="action_iho" value="" />
-							</div>
-						</div> <!-- .row -->
+							<div class="row">					
+								<div class="large-5 columns">
+									<select id="in_honor_of_options" type="text" name="action_inhonorof">
+										<option value="">Choose one</option>
+										<option value="in_honor">In Honor Of:</option>
+										<option value="in_memoriam">In Memoriam:</option>
+									</select>
+								</div>
 
-						<div id="notification_options" class="row hidden"> 
-							<div class="large-12 columns">
-								<label class="uppercase">I would like to notify someone of this gift via</label>
+								<div class="large-7 columns">
+									<input id="honor_name" type="text" name="action_iho" value="" />
+								</div>
+							</div> <!-- .row -->
 
-								<div class="row">
-									<div class="large-5 columns">
-										<label><input id="not_type_na" type="radio" name="action_iho_notification_type" value="na" checked> No notification necessary</label>
-									</div>
+							<div id="notification_options" class="row hidden"> 
+								<div class="large-12 columns">
+									<label class="uppercase">I would like to notify someone of this gift via</label>
 
-									<div class="large-4 columns">
-										<label><input id="not_type_email"  type="radio" name="action_iho_notification_type" value="email" > Email (be green!)</label>
-									</div>
-
-									<div class="large-3 columns">
-										<label><input id="not_type_mail"  type="radio" name="action_iho_notification_type" value="mail" > Letter</label>
-									</div>
-								</div> <!-- .row -->
-
-								<div id="notification-fields" class="ak-labels-overlaid hidden">
 									<div class="row">
-										<div class="large-4 columns">
-											<label for="id_action_iho_recipient_first_name">First Name</label>
-											<input id="id_action_iho_recipient_first_name" type="text" name="action_iho_recipient_first_name" value="" />
+										<div class="large-5 columns">
+											<label><input id="not_type_na" type="radio" name="action_iho_notification_type" value="na" checked> No notification necessary</label>
 										</div>
 
 										<div class="large-4 columns">
-											<label for="id_action_iho_recipient_last_name">Last Name</label>
-											<input id="id_action_iho_recipient_last_name" type="text" name="action_iho_recipient_last_name" value="" />
+											<label><input id="not_type_email"  type="radio" name="action_iho_notification_type" value="email" > Email (be green!)</label>
 										</div>
 
-										<div id="iho-email" class="large-4 columns">
-											<label for="id_action_iho_recipient_email">Email: </label>
-											<input id="id_action_iho_recipient_email" type="text" name="action_iho_recipient_email" value="" />
+										<div class="large-3 columns">
+											<label><input id="not_type_mail"  type="radio" name="action_iho_notification_type" value="mail" > Letter</label>
 										</div>
 									</div> <!-- .row -->
 
-									<div class="row hidden" id="iho-mailing">
-										<div class="large-4 columns">
-											<label for="id_action_iho_recipient_address">Street Address</label>
-											<input id="id_action_iho_recipient_address" type="text" name="action_iho_recipient_address" value="" />
-										</div>
-									
-										<div class="large-4 columns">
-											<label for="id_action_iho_recipient_city">City</label>
-											<input id="is_action_iho_recipient_city" type="text" name="action_iho_recipient_city" value="" />
-										</div>
-									
-
-										<div class="large-2 columns">
-											<select id="id_action_iho_recipient_state" name="action_iho_recipient_state">
-												<option value="">State</option>
-												<option value="AL">Alabama</option>
-												<option value="AK">Alaska</option>
-												<option value="AZ">Arizona</option>
-												<option value="AR">Arkansas</option>
-												<option value="CA">California</option>
-												<option value="CO">Colorado</option>
-												<option value="CT">Connecticut</option>
-												<option value="DE">Delaware</option>
-												<option value="FL">Florida</option>
-												<option value="GA">Georgia</option>
-												<option value="HI">Hawaii</option>
-												<option value="ID">Idaho</option>
-												<option value="IL">Illinois</option>
-												<option value="IN">Indiana</option>
-												<option value="IA">Iowa</option>
-												<option value="KS">Kansas</option>
-												<option value="KY">Kentucky</option>
-												<option value="LA">Louisiana</option>
-												<option value="ME">Maine</option>
-												<option value="MD">Maryland</option>
-												<option value="MA">Massachusetts</option>
-												<option value="MI">Michigan</option>
-												<option value="MN">Minnesota</option>
-												<option value="MS">Mississippi</option>
-												<option value="MO">Missouri</option>
-												<option value="MT">Montana</option>
-												<option value="NE">Nebraska</option>
-												<option value="NV">Nevada</option>
-												<option value="NH">New Hampshire</option>
-												<option value="NJ">New Jersey</option>
-												<option value="NM">New Mexico</option>
-												<option value="NY">New York</option>
-												<option value="NC">North Carolina</option>
-												<option value="ND">North Dakota</option>
-												<option value="OH">Ohio</option>
-												<option value="OK">Oklahoma</option>
-												<option value="OR">Oregon</option>
-												<option value="PA">Pennsylvania</option>
-												<option value="RI">Rhode Island</option>
-												<option value="SC">South Carolina</option>
-												<option value="SD">South Dakota</option>
-												<option value="TN">Tennessee</option>
-												<option value="TX">Texas</option>
-												<option value="UT">Utah</option>
-												<option value="VT">Vermont</option>
-												<option value="VA">Virginia</option>
-												<option value="WA">Washington</option>
-												<option value="DC">Washington, D.C.</option>
-												<option value="WV">West Virginia</option>
-												<option value="WI">Wisconsin</option>
-												<option value="WY">Wyoming</option>
-											</select>
-										</div>
-
-										<div class="large-2 columns">
-											<label for="id_action_iho_recipient_zip">Zip</label>
-											<input id="id_action_iho_recipient_zip"  type="text" name="action_iho_recipient_zip" value="" />
+									<div id="notification-fields" class="ak-labels-overlaid hidden">
+										<div class="row">
+											<div class="large-4 columns">
+												<label for="id_action_iho_recipient_first_name">First Name</label>
+												<input id="id_action_iho_recipient_first_name" type="text" name="action_iho_recipient_first_name" value="" />
 											</div>
-									</div> <!-- .row -->
 
-									<div class="row">
-										<div class="large-12 columns">
-											<label for="id_action_iho_recipient_notification_message">Would you like to add a personal message to the notification?</label>
-											<textarea id="id_action_iho_recipient_notification_message" name="action_iho_recipient_notification_message"></textarea>
+											<div class="large-4 columns">
+												<label for="id_action_iho_recipient_last_name">Last Name</label>
+												<input id="id_action_iho_recipient_last_name" type="text" name="action_iho_recipient_last_name" value="" />
+											</div>
+
+											<div id="iho-email" class="large-4 columns">
+												<label for="id_action_iho_recipient_email">Email: </label>
+												<input id="id_action_iho_recipient_email" type="text" name="action_iho_recipient_email" value="" />
+											</div>
+										</div> <!-- .row -->
+
+										<div class="row hidden" id="iho-mailing">
+											<div class="large-4 columns">
+												<label for="id_action_iho_recipient_address">Street Address</label>
+												<input id="id_action_iho_recipient_address" type="text" name="action_iho_recipient_address" value="" />
+											</div>
+										
+											<div class="large-4 columns">
+												<label for="id_action_iho_recipient_city">City</label>
+												<input id="is_action_iho_recipient_city" type="text" name="action_iho_recipient_city" value="" />
+											</div>
+										
+
+											<div class="large-2 columns">
+												<select id="id_action_iho_recipient_state" name="action_iho_recipient_state">
+													<option value="">State</option>
+													<option value="AL">Alabama</option>
+													<option value="AK">Alaska</option>
+													<option value="AZ">Arizona</option>
+													<option value="AR">Arkansas</option>
+													<option value="CA">California</option>
+													<option value="CO">Colorado</option>
+													<option value="CT">Connecticut</option>
+													<option value="DE">Delaware</option>
+													<option value="FL">Florida</option>
+													<option value="GA">Georgia</option>
+													<option value="HI">Hawaii</option>
+													<option value="ID">Idaho</option>
+													<option value="IL">Illinois</option>
+													<option value="IN">Indiana</option>
+													<option value="IA">Iowa</option>
+													<option value="KS">Kansas</option>
+													<option value="KY">Kentucky</option>
+													<option value="LA">Louisiana</option>
+													<option value="ME">Maine</option>
+													<option value="MD">Maryland</option>
+													<option value="MA">Massachusetts</option>
+													<option value="MI">Michigan</option>
+													<option value="MN">Minnesota</option>
+													<option value="MS">Mississippi</option>
+													<option value="MO">Missouri</option>
+													<option value="MT">Montana</option>
+													<option value="NE">Nebraska</option>
+													<option value="NV">Nevada</option>
+													<option value="NH">New Hampshire</option>
+													<option value="NJ">New Jersey</option>
+													<option value="NM">New Mexico</option>
+													<option value="NY">New York</option>
+													<option value="NC">North Carolina</option>
+													<option value="ND">North Dakota</option>
+													<option value="OH">Ohio</option>
+													<option value="OK">Oklahoma</option>
+													<option value="OR">Oregon</option>
+													<option value="PA">Pennsylvania</option>
+													<option value="RI">Rhode Island</option>
+													<option value="SC">South Carolina</option>
+													<option value="SD">South Dakota</option>
+													<option value="TN">Tennessee</option>
+													<option value="TX">Texas</option>
+													<option value="UT">Utah</option>
+													<option value="VT">Vermont</option>
+													<option value="VA">Virginia</option>
+													<option value="WA">Washington</option>
+													<option value="DC">Washington, D.C.</option>
+													<option value="WV">West Virginia</option>
+													<option value="WI">Wisconsin</option>
+													<option value="WY">Wyoming</option>
+												</select>
+											</div>
+
+											<div class="large-2 columns">
+												<label for="id_action_iho_recipient_zip">Zip</label>
+												<input id="id_action_iho_recipient_zip"  type="text" name="action_iho_recipient_zip" value="" />
+												</div>
+										</div> <!-- .row -->
+
+										<div class="row">
+											<div class="large-12 columns">
+												<label for="id_action_iho_recipient_notification_message">Would you like to add a personal message to the notification?</label>
+												<textarea id="id_action_iho_recipient_notification_message" name="action_iho_recipient_notification_message"></textarea>
+											</div>
 										</div>
-									</div>
-								</div> <!-- #notification-fields -->
-							</div> <!-- .large-12 -->
-						</div> <!-- .row -->
-					</div> <!-- .memory-of -->
-				</div> <!-- .row -->
+									</div> <!-- #notification-fields -->
+								</div> <!-- .large-12 -->
+							</div> <!-- .row -->
+						</div> <!-- .memory-of -->
+					</div> <!-- .row -->
+				{% endif %}
 			</div> <!-- .step-wrapper -->
 		</div> <!-- #step-one -->
 
 		<div id="step-two" class="donate-step large-7 columns">
+			<div class="progress-meter-wrapper">
+				{% include "./progress_meter.html" %}
+			</div> <!-- .progress-meter-wrapper -->
+
 			<div class="step-wrapper">
 				<h3 class="step-header">
 					<span class="arrow"></span>Step 2</strong>: Enter your information
@@ -821,7 +948,7 @@
 				{% if has_shippable_products %}
 					<div class="row shipping-info">
 						<div class="large-12 columns ak-errs-below">
-							<label class="ak-label-above">Shipping Address</label>
+							<label class="ak-label-above uppercase">Shipping Address</label>
 			
 							{% with "shipping_" as input_name_prefix %}
 								<div>
@@ -945,17 +1072,15 @@
 				<div class="row submit">
 					<div class="large-12 columns">
 						{% if page.payment_processor_information.use_cse %}
-							<button disabled="true" type="submit" class="ak-styled-submit-button">Submit Donation</button>
+							<button disabled="true" type="submit" class="ak-styled-submit-button">{% if page.custom_fields.submit_button_text %}{{ page.custom_fields.submit_button_text }}{% else %}Submit Donation{% endif %}</button>
 							<noscript>
 								<p><b>JavaScript is required</b> so this page can securely submit your donation.</p>
 							</noscript>
 						{% else %}
-							<button type="submit" class="button large alert">Submit Donation</button>
+							<button type="submit" class="button large alert">{% if page.custom_fields.submit_button_text %}{{ page.custom_fields.submit_button_text }}{% else %}Submit Donation{% endif %}</button>
 						{% endif %}
 					</div>
 				</div> <!-- .submit -->
-
-				{% include "./progress_meter.html" %}
 
 				{% if pp.use_cse %}
 					<script src="https://js.braintreegateway.com/v1/braintree-data.js"></script>
@@ -963,6 +1088,18 @@
 			</div> <!-- .step-wrapper -->
 		</div> <!-- #step-two -->
 	</div> <!-- .row -->
+
+	<div class="row show-for-small donate-mobile-ask">
+		<div class="large-12 columns page-ask">
+			{% include_tmpl form.ask_text %}
+		
+			{% if page.custom_fields.image %}
+				<div class="custom-image">
+					<img src="{{ page.custom_fields.image }}" />
+				</div> <!-- .custom-image -->
+			{% endif %}
+		</div> <!-- .page-ask -->
+	</div> <!-- .desktop-petition -->
 </form>
 {% comment %}
 	/*

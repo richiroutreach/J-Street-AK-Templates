@@ -29,13 +29,15 @@
 					{% autoescape off %}
 						{% include_tmpl form.introduction_text %}
 					{% endautoescape %}
-			
-					{% include "./progress_meter.html" %}
 				</div> <!-- .page-ask -->
 			</div> <!-- .desktop-signup -->
 
 			<div id="signup-form" class="large-4 medium-6 small-12 columns">
-				<h3 class="form-header">Sign up</h3>
+				<h3 class="form-header">{% if page.custom_fields.form_title %}{{ page.custom_fields.form_title }}{% else %}Sign up{% endif %}</h3>
+
+				<div class="progress-meter-wrapper">
+					{% include "./progress_meter.html" %}
+				</div> <!-- .progress-meter-wrapper -->
 
 				{% include "./user_form_wrapper.html" %}
 

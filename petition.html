@@ -35,19 +35,19 @@
 
 	<div class="row">
 		<div class="large-6 columns large-push-6 petition-form">
-			<h3 class="form-header">Sign this petition</h3>
+			<h3 class="form-header">{% if page.custom_fields.form_title %}{{ page.custom_fields.form_title }}{% else %}Sign this petition{% endif %}</h3>
+
+			<div class="progress-meter-wrapper">
+				{% include "./progress_meter.html" %}
+			</div> <!-- .progress-meter-wrapper -->
 
 			{% include "./user_form_wrapper.html" %}
 
 			{% include "./inline_tellafriend.html" %}
 
 			<div class="form-submit">
-				<button type="submit" class="large alert button">Sign</button>
+				<button type="submit" class="large alert button">{% if page.custom_fields.submit_button_text %}{{ page.custom_fields.submit_button_text }}{% else %}Sign{% endif %}</button>
 			</div> <!-- .form-submit -->
-
-			<div class="progress-meter-wrapper">
-				{% include "./progress_meter.html" %}
-			</div> <!-- .progress-meter-wrapper -->
 		</div> <!-- .petition-form -->
 
 		<div class="large-6 columns large-pull-6 petition-text-wrapper">

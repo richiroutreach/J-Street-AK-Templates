@@ -29,13 +29,13 @@
 						{% include_tmpl form.introduction_text %}
 					{% endautoescape %}
 				</div> <!-- .page-ask -->
-
-				<div class="progress-meter-wrapper">
-					{% include "./progress_meter.html" %}
-				</div> <!-- .progress-meter-wrapper -->
 			</div> <!-- .desktop-call -->
 
 			<div id="call-story" class="large-4 columns medium-6 small-12 columns">
+				<div class="progress-meter-wrapper">
+					{% include "./progress_meter.html" %}
+				</div> <!-- .progress-meter-wrapper -->
+				
 				<div id="need_contact_info"></div>
 
 				<script type="text/ak-template" for="need_contact_info">
@@ -90,7 +90,7 @@
 				{% endif %}
 
 				<div class="form-submit">
-					<button type="submit" class="large alert">Submit</button>
+					<button type="submit" class="large alert">{% if page.custom_fields.submit_button_text %}{{ page.custom_fields.submit_button_text }}{% else %}Submit{% endif %}</button>
 				</div> <!-- .form-submit -->
 			</div> <!-- #call-story -->
 		</div> <!-- .row -->

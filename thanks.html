@@ -3,6 +3,28 @@
 
 {% block meta_additions %}
 	<meta property="og:url" value="{{ page.canonical_url }}">
+<!-- Facebook Conversion Code for Conversions - 2015 Action Pages -->
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', '6025646150262', {'value':'0.00','currency':'USD'}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6025646150262&amp;cd[value]=0.00&amp;cd[currency]=USD&amp;noscript=1" /></noscript>
+<script src="//platform.twitter.com/oct.js" type="text/javascript"></script>
+<script type="text/javascript">twttr.conversion.trackPid('l6oe0', { tw_sale_amount: 0, tw_order_quantity: 0 });</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt="" src="https://analytics.twitter.com/i/adsct?txn_id=l6oe0&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+<img height="1" width="1" style="display:none;" alt="" src="//t.co/i/adsct?txn_id=l6oe0&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+</noscript>
 {% endblock %}
 
 {% block content %}
@@ -13,8 +35,10 @@
 			{% endif %}
 		{% endif %}
 
-		{% if page.followup.send_taf and args.taf %}
+		{% if page.followup.send_taf %}
 			<form name="taf" method="POST" action="/update_action/" accept-charset="utf-8" class="ak-thanks">
+				<input type="hidden" class="ak-share-url" value="{{ page.canonical_url }}"/>
+
 				<div class="thank-you-text">
 					{% comment %}
 						{% include './social_plugins.html' %}
@@ -49,7 +73,7 @@
 					<div class="large-6 columns large-offset-1 email-wrapper">
 						<div class="row">
 							<div class="large-6 medium-12 small-12 columns diy-email">
-								<a href="mailto:?subject={{ page.followup.taf_subject|urlencode }}&body={{ page.followup.taf_body|referring_akid:akid|tag_links:'source=mailto'|urlencode }}" class="button alert" target="_blank">{% filter ak_text:"taf_mailto_ask" %}Email Your Friends <i class="fa fa-chevron-right"></i>{% endfilter %}</a>
+								<a href="mailto:?subject={{ page.followup.taf_subject|urlencode }}&amp;body={% filter referring_akid:akid|tag_links:"source=mailto"|urlencode %}{% include_tmpl page.followup.taf_body escaped %}{% endfilter %}" class="ak-email ak-share-button button alert" target="_blank">{% filter ak_text:"taf_mailto_ask" %}Email Your Friends <i class="fa fa-chevron-right"></i>{% endfilter %}</a>
 							</div> <!-- .diy-email -->
 
 							<div class="large-6 medium-12 small-12 columns ak-email">
@@ -79,7 +103,7 @@
 											<label for="#id_taf_body">Message:</label>
 
 											<div id="id_taf_body" name="taf_body" class="ak-sharebox-tafbody">
-												{% filter referring_akid:akid|tag_links:"source=tafemail" %}
+												{% filter referring_akid:akid|tag_links:"source=taf" %}
 													<div class="taf-body">{% include_tmpl page.followup.taf_body escaped %}</div> <!-- .taf-body -->
 												{% endfilter %}
 											</div>
@@ -114,28 +138,28 @@
 										<div class="row facebook-share">
 											<div class="large-12 columns">
 												<div class="fb-share-text">
-													<div class="clearfix">
-														<div class="fb-share-image">
-															<img src="{{ page.custom_fields.meta_image|default:"https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg" }}">
+													{% if page.followup.share_image %}
+														<div class="clearfix">
+															<div class="fb-share-image">
+																<img src="{{ page.followup.share_image }}">
+															</div>
+															
+															<h3>{% if page.followup.share_title %}{{ page.followup.share_title }}{% else %}{{ page.title }}{% endif %}</h3>
 														</div>
-
-														<h3>{{ page.title }} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</h3>
-													</div>
+													{% endif %}
 
 													<div class="clearfix">
-														{% if page.custom_fields.meta_description %}
-															{{ page.custom_fields.meta_description }}
+														{% if page.followup.share_description|length >= 1 %}
+															{{ page.followup.share_description }}
 														{% else %}
-															{% filter striptags %}
-																{% include_tmpl form.about_text %}
-															{% endfilter %}
+																{% include_tmpl page.about_text %}{% include_tmpl form.introduction_text %}
 														{% endif %}
 													</div>
 												</div> <!-- .fb-share-text -->
 											</div> <!-- .fb-share-text -->
 										</div> <!-- .row -->
 
-										<a href="https://www.facebook.com/sharer/sharer.php?u={{ page.canonical_url }}?data={{ user.id }}-facebook" class="share-button" target="newwindow" onclick="newWindow(275,475)">Share to Facebook</a>
+										<a href="/share/link?type=fb&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}" class="ak-facebook ak-share-button share-button" target="_blank">Share to Facebook</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -147,15 +171,15 @@
 									</div>
 
 									<div class="small-8 medium-10 large-9 columns text">
-										<div class="tweet-text">
-											{% if page.custom_fields.twitter_msg %}
-												{{ page.custom_fields.twitter_msg }}
+										<div class="tweet-text">		
+											{% if page.followup.twitter_message %}					
+												{{ page.followup.twitter_message }}
 											{% else %}
-												{% include_tmpl page.followup.taf_subject escaped %}
+												{{ page.title }}
 											{% endif %}
 										</div> <!-- .tweet-text -->
 
-										<a href="http://twitter.com/intent/tweet?data={{ user.id }}-twitter&text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
+										<a class="share-button ak-twitter ak-share-button" href="/share/link?type=tw&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}" target="_blank">Tweet This</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -228,21 +252,21 @@
 										<div class="row facebook-share">
 											<div class="large-12 columns">
 												<div class="fb-share-text">
-													<div class="clearfix">
-														<div class="fb-share-image">
-															<img src="{{ page.custom_fields.meta_image|default:"https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg" }}">
+													{% if page.followup.share_image %}
+														<div class="clearfix">
+															<div class="fb-share-image">
+																<img src="{{ page.followup.share_image }}">
+															</div>
+															
+															<h3>{% if page.followup.share_title %}{{ page.followup.share_title }}{% else %}{{ page.title }}{% endif %}</h3>
 														</div>
-
-														<h3>{{ page.title }} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</h3>
-													</div>
+													{% endif %}
 
 													<div class="clearfix">
-														{% if page.custom_fields.meta_description %}
-															{{ page.custom_fields.meta_description }}
+														{% if page.followup.share_description|length >= 1 %}
+															{{ page.followup.share_description }}
 														{% else %}
-															{% filter striptags %}
-																{% include_tmpl form.about_text %}
-															{% endfilter %}
+																{% include_tmpl page.about_text %}{% include_tmpl form.introduction_text %}
 														{% endif %}
 													</div>
 												</div> <!-- .fb-share-text -->
@@ -261,15 +285,15 @@
 									</div>
 
 									<div class="small-8 medium-10 large-9 columns text">
-										<div class="tweet-text">
-											{% if page.custom_fields.twitter_msg %}
-												{{ page.custom_fields.twitter_msg }}
+										<div class="tweet-text">							
+											{% if page.followup.twitter_message %}					
+												{{ page.followup.twitter_message }}
 											{% else %}
-												{% include_tmpl page.followup.taf_subject escaped %}
+												{{ page.title }}
 											{% endif %}
 										</div> <!-- .tweet-text -->
 
-										<a href="http://twitter.com/intent/tweet?data={{ user.id }}-twitter&text={{ page.custom_fields.twitter_msg|default:'page.followup.taf_subject'|urlencode }}" class="share-button" target="newwindow" onclick="newWindow(275,475)">Tweet This</a>
+										<a class="share-button ak-twitter ak-share-button" href="/share/link?type=tw&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}" target="_blank">Tweet This</a>
 									</div> <!-- .text -->
 								</div> <!-- .row -->
 							</div> <!-- .sharebox-->
@@ -288,11 +312,12 @@
 		{% endif %}
 
 		<script>
+			/*
 			function newWindow(height,width){
 				var settings = "height=" + height + ",width=" + width + ",status=yes,toolbar=no,menubar=no,location=no";
 				window.open("about:blank","newwindow", settings);
 			}
-			/*
+
 			function fullBackground() {
 				var headerHeight = $('.splash-header-wrapper').outerHeight(true);
 				var footerHeight = $('.footer-wrapper').outerHeight(true);
@@ -317,6 +342,7 @@
 	<script type="text/javascript">
 		actionkit.forms.contextRoot = '/context/';
 		actionkit.forms.initTafForm('taf');
+		actionkit.sharing.initShareTools();
 	</script>
 {% endblock %}
 <!-- @END Development Template/thanks.html -->

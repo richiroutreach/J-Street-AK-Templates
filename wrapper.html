@@ -21,6 +21,7 @@
 	*/
 {% endcomment %}
 
+{% comment %}
 	<meta property="og:title" content="{% client_name %} | {{ page.title }}" />
 
 	<meta property="og:image" content="{{ page.custom_fields.meta_image|default:"https://s3.amazonaws.com/s3.jstreet.org/images/J_STREET_ARROW.jpg" }}" />
@@ -30,9 +31,20 @@
 		<meta name="description" content="{{ page.custom_fields.meta_description }}" />
 	{% endif %}
 
+	<meta property="og:url" content="{{ page.followup.share_url_value }}">
+
 	<meta name="title" content="{% client_name %} | {{ page.title }}" />
+{% endcomment %}
 	<meta property="twitter:account_id" content="14811485" />
 
+	<!-- AK Sharing -->
+	{{ page.followup.share_title_tag }}
+
+	{% if form.id %}<meta name="description" property="og:description" content="{% block description %}{{ page.followup.share_description_value }}{% endblock %}">{% endif %}
+
+	{{ page.followup.share_image_tag }}
+	<!-- AK Sharing -->
+	
 {% comment %}
 	/*
 -------------------------------------------------------------------------------
@@ -74,8 +86,10 @@
 	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.min.js"></script>
 
+{% comment %}
 	<!-- Custom JS -->
-	<script src="https://s3.amazonaws.com/media.fooddemocracynow.org/foundation/js/functions.js"></script>
+	<script src="https://s3.amazonaws.com/s3.jstreet.org/foundation/js/functions.js"></script>
+{% endcomment %}
 
 	{% if page.custom_fields.background_image %}
 		<style>
@@ -101,15 +115,17 @@
 					<h1 class="hidden">jStreet</h1>
 
 					<a href="http://jstreet.org">
-						<img src="https://s3.amazonaws.com/s3.jstreet.org/images/jstreet-lg.jpg" alt="Logo" title="jStreet - The political home for pro-Israel, pro-peace Americans">
+						<img src="https://s3.amazonaws.com/s3.jstreet.org/foundation/img/j-street-logo.png" alt="Logo" title="jStreet - The political home for pro-Israel, pro-peace Americans">
 					</a>
 				</div> <!-- .logo -->
 
 				<div class="socmed medium-6 small-6 columns">
 					<ul>
-						<li><a class="tw" target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
-						<li><a class="fb" target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
-						<li><a class="gp" target="_blank" href="#"><i class="fa fa-google-plus"></i></a></li>
+						<li><a class="tw ak-twitter ak-share-button" target="_blank" href="/share/link?type=tw&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}"><i class="fa fa-twitter"></i></a></li>
+						<li><a class="fb ak-facebook ak-share-button" target="_blank" href="/share/link?type=fb&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}"><i class="fa fa-facebook"></i></a></li>
+						{% comment %}
+							<li><a class="gp" target="_blank" href="#"><i class="fa fa-google-plus"></i></a></li>
+						{% endcomment %}
 					</ul>
 				</div> <!-- .socmed -->
 			</div> <!-- #header -->
@@ -125,7 +141,7 @@
 					<div id="sidebar" class="sidebar large-2 small-12 sidebar-half-column page-column columns">
 						<div class="signature-wrapper">
 							{% if page.type == "Petition" %}
-								<h3>Recent Signatures</h3>
+								<h3>{% if page.custom_fields.sidebar_header_text %}{{ page.custom_fields.sidebar_header_text }}{% else %}Recent Signatures{% endif %}</h3>
 
 								<div class="row">
 									{% for a in page.recent_actions|unique:"user"|slice:":25" %}
@@ -147,14 +163,15 @@
 				<script type="text/javascript">
 					actionkit.forms.contextRoot = '/context/';
 					actionkit.forms.initForm('act');
+					actionkit.sharing.initShareTools();
 				</script>
 			{% endblock %}
 		</div> <!-- .body-wrapper -->
 	
 		<div class="side-links">
 			<ul>
-				<li class="tw"><a target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
-				<li class="fb"><a target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
+				<li class="tw"><a class="ak-twitter ak-share-button" target="_blank" href="/share/link?type=tw&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}"><i class="fa fa-twitter"></i></a></li>
+				<li class="fb"><a class="ak-facebook ak-share-button" target="_blank" href="/share/link?type=fb&amp;page_name={{page.name}}&amp;action_id={{action.id}}&amp;akid={{akid}}"><i class="fa fa-facebook"></i></a></li>
 			</ul>
 		</div> <!-- .side-links -->
 	</div>
@@ -356,6 +373,25 @@
 		</script>
 	{% endif %}
 
+	 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+	<script>
+		$( document ).ready( function() {
+			// Side icon popup - refuses to use AK's function so binding it manually
+			$( '.side-links li a' ).click( function() {
+				var width  = 575, height = 320;
+
+				window.open(this.href, this.target, 'status=0' +
+					',width='  + width  +
+					',height=' + height +
+					',top='    + ( window.screenY + ($(window).height() - height)/2 ) +
+					',left='   + ( window.screenX + ($(window).width()  - width )/2) 
+				);
+
+				return false;
+			});
+		});
+	</script>
 {% comment %}
 	/*
 -------------------------------------------------------------------------------

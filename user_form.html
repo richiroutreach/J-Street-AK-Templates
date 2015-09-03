@@ -44,6 +44,14 @@
 		</div>
 	{% endfor %}
 
+	{% if not page.custom_fields.disable_c4_member %}
+		<div id="id_c4_member_box" class="c4-member">
+			<label for="id_c4_member">
+				<input id="id_c4_member" type="checkbox" name="user_c4_member" value="1" checked="checked">I want to stand up and be counted as a J Street Member
+			</label>
+		</div>
+	{% endif %}
+
 	{% if 'country'|is_in:fields %}
 		<input type="hidden" name="auto_country" value="1">
 		<style type="text/css">
