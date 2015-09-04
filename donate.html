@@ -576,90 +576,173 @@
 						</div>
 					</div> <!-- .row -->
 
+{% comment %}
+	/*
+-------------------------------------------------------------------------------
+		@START - Event Ticket Code
+-------------------------------------------------------------------------------
+	*/
+{% endcomment %}
 					{% if page.custom_fields.event_tickets %}
 						<div id="guest-boxes"></div>
 
 						<script>
-							$( '.ticket-add' ).click( function() {
-								var id = $( this ).data( 'product' );
-								var product = $( this ).data( 'name' ); 
-								var guests = 0;
+							// Variable to hold how many tickets are in the URL (ie failed CC validation)
+							var ticketCount;
+							
+							// Loop through our products on this page
+							{% for product in products %}
+								// Get how many of this ticket the user had tried to purchase
+								ticketCount = getURLParameter( 'product_' + {{ product.id}} );
 
+								// Loop through the tickets
+								for( var i = 1; i <= ticketCount; i++ ) {
+									// Add HTML guest box for this particular ticket
+									createGuestlist( {{ product.id}}, '{{ product.name }}', getGuests( {{ product.id }} ), i );
+
+									// Set the value of the primary text field
+									$( 'input[name="action_{{ product.id }}-' + i + '-primary-name"]').val( getURLParameter( '{{ product.id }}-' + i + '-primary-name') );
+
+									// Loop through the rest of the boxes for this ticket
+									for( var j = 1; j < getGuests( {{ product_id }} ); j++ ) {
+										// Get the name of the guest box from the URL
+										$( 'input[name="action_{{ product.id }}-' + i + '-guest- ' + j + '-name"]').val( getURLParameter( '{{ product.id }}-' + i + '-guest- ' + j + '-name') );
+									}
+								}
+							{% endfor %}
+
+							// On submitm, we need to enable the product inputs fields
+							$( '#act' ).submit( function() {
+								$( '.ak_product_inputs' ).each( function() {
+									$( this ).prop( 'disabled', false );
+								});
+							});
+
+							// Implement the "+" button functionality
+							$( '.ticket-add' ).click( function() {
+								// Get the AK ID of the product
+								var id = $( this ).data( 'product' );
+
+								// Get the name of the product
+								var product = $( this ).data( 'name' ); 
+
+								// Get how many guests this ticket should have
+								var guests = getGuests( id );
+
+								// Get the current number of tickets selected for this product
 								var value = parseInt( $( '#product_' + id ).val() ) || 0;
 
-								if( id == 9 ) {
-									guests = 11;
-								} else if( id == 10 || id == 11 ) {
-									guests = 9;
-								} else if( id == 12 ) {
-									guests = 1;
-								}
-
+								/// Incriment the number of tickets bought by 1
 								$( '#product_' + id ).val( value + 1 ).change();
 
+								// Create the HTML block to hold the guests
 								createGuestlist( id, product, guests, value + 1);
 							});
 
+							// Implement the "Remove Ticket" button functionality
 							$( 'body' ).on( 'click', '.ticket-remove', function() {
+								// Get the HTML ID of the box to remove
 								var id = $( this ).data( 'box' );
+
+								// Get the AK ID of the product
 								var product = $( this ).data( 'id' );
+
+								// Get the current number of tickets selected for this product
 								var value = parseInt( $( '#product_' + product ).val() ) || 0;
 
+								// Disable the button so you can't spam click it
 								$( this ).prop( 'disabled', true );
 
+								// Fade out the HTML for this guest list box
 								$( '#' + id ).fadeOut( 300, function() {
+									// Remove the HTML entirely once the animation finishes
 									$( '#' + id ).remove();
 
+									// Ensure our columns resize after removal
 									$.fn.matchHeight._update();
 								});
 
+								// Decrease the number of tickets selected by 1
 								$( '#product_' + product ).val( value - 1 ).change();
 							});
 
+							// Takes an AK product ID and returns the number of guests
+							function getGuests( id ) {
+								if( id == 9 ) {
+									return 11;
+								} else if( id == 10 || id == 11 ) {
+									return 9;
+								} else if( id == 12 ) {
+									return 1;
+								} else {
+									return 0;
+								}
+							}
+
+							// Create the HTML for a list of guests
 							function createGuestlist( product, name, guests, count ) {						
+								// Create the start of the HTML string
 								var html = '<div id="product-' + product +'-' + count + '" data-box="product-' + product +'-' + count + '" data-id="' + product + '" class="guest-box hidden large-12 columns"><fieldset><legend class="Uppercase">' + name +'</legend><div class="row"><div class="';
 
+								// If there's only one guest, the primary box should only take up 6 columns
 								if( guests == 1) {
 									html += 'large-6';
+								// Otherwise, make the primary input box take up all 12 columns
 								} else {
 									html += 'large-12';
 								}
 
-								html += ' columns"><input type="text" name="' + product + '-' + count + '-primary-name" placeholder="Primary Name" /></div>';
+								// Add on more HTML
+								html += ' columns"><input type="text" name="action_' + product + '-' + count + '-primary-name" placeholder="Primary Name" /></div>';
 
+								// If there's more than one guest, add the table guest list header
 								if( guests > 1 ) {
 									html +='</div><div class="row"><div class="large-12 columns"><label>Table Guest List</label></div></div>';
 								}
 
+								// Loop through the number of guests
 								for( var i = 0; i < guests; i++ ) {
+									// Add rows as needed
 									if( i % 2 == 0 && guests != 1) {
 										html += '<div class="row">';
 									}
 
 									html += '<div class="large-6 columns';
 
+									// If this is the last guest make this column centered
 									if( i == ( guests - 1) && guests > 1 ) {
 										html +=' large-centered';
 									} 
 
-									html +='"><input type="text" name="' + product + '-' + count + '-guest-' + ( i + 1 ) + '-name" placeholder="Guest Name" /></div>';
+									html +='"><input type="text" name="action_' + product + '-' + count + '-guest-' + ( i + 1 ) + '-name" placeholder="Guest Name" /></div>';
 								
+									// Close our rows as needed							
 									if( i % 2 == 1 && guests != 1) {
 										html += '</div>';
 									}
 								}
 
+								// Add the final part of the HTML
 								html += '<a class="ticket-remove button small" data-box="product-' + product +'-' + count + '" data-id="' + product + '" >Remove Ticket</a></fieldset></div>';
 
+								// Attach our HTML to the guest-boxes div
 								$( '#guest-boxes' ).append( html );
 
+								// Fade the guest box in
 								$( '#product-' + product + '-' + count ).fadeIn( 300);
 
+								// Make the columns match height
 								$.fn.matchHeight._update();
 							}
-
 						</script>
 					{% endif %}
+{% comment %}
+	/*
+-------------------------------------------------------------------------------
+		@END - Event Ticket Code
+-------------------------------------------------------------------------------
+	*/
+{% endcomment %}
 				{% endif %}
 
 				{% if has_candidates %}
