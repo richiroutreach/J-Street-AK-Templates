@@ -703,21 +703,22 @@
 								// Loop through the number of guests
 								for( var i = 0; i < guests; i++ ) {
 									// Add rows as needed
-									if( i % 2 == 0 && guests != 1) {
+									if( ( i % 3 == 0 ) && guests != 1) {
 										html += '<div class="row">';
 									}
 
-									html += '<div class="large-6 columns';
+									html += '<div class="large-';
 
-									// If this is the last guest make this column centered
-									if( i == ( guests - 1) && guests > 1 ) {
-										html +=' large-centered';
-									} 
+									if( guests == 1 ) {
+										html += '6';
+									} else {
+										html += '4';
+									}
 
-									html +='"><input type="text" name="action_' + product + '-' + count + '-guest-' + ( i + 1 ) + '-name" placeholder="Guest Name" /></div>';
+									html +=' columns"><input type="text" name="action_' + product + '-' + count + '-guest-' + ( i + 1 ) + '-name" placeholder="Guest Name" /></div>';
 								
 									// Close our rows as needed							
-									if( i % 2 == 1 && guests != 1) {
+									if( ( i % 3 == 2 || ( i + 1 ) == guests ) && guests != 1 ) {
 										html += '</div>';
 									}
 								}

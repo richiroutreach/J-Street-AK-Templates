@@ -163,3 +163,19 @@
 		}
 	}
 }
+
+.guest-box {
+	input[type="text"] {
+		font-size: 12px;
+		height: auto;
+		margin-bottom: 0.5rem;
+	}
+
+	[class*="column"]+[class*="column"]:last-child {
+		float: left;
+	}
+
+	.ticket-remove {
+		margin-top: 1rem;
+	}
+}
